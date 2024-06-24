@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-### 1. Use the regular Julia binaries
+### Use the regular Julia binaries
 
 * [juliaup](https://github.com/JuliaLang/juliaup) or download from [julialang.org](https://julialang.org/downloads/).
 * Is there a Julia module on the cluster available?
@@ -12,7 +12,7 @@
   * Generally unnecessary.
   * Can be required for certain profiling, though.
 
-### 2. Set [`JULIA_DEPOT_PATH`](https://docs.julialang.org/en/v1/manual/environment-variables/#JULIA_DEPOT_PATH) appropriately
+### Set [`JULIA_DEPOT_PATH`](https://docs.julialang.org/en/v1/manual/environment-variables/#JULIA_DEPOT_PATH) appropriately
 
 **Rule of thumb:** Put Julia on the parallel file system (PFS), which is often called "*scratch*".
 
@@ -23,7 +23,7 @@
 
 **Watch out:** Files on the PFS ("*scratch*") may be deleted automatically after a certain time period. (Pro tip: `touch` the files recursively every once in a while, e.g. in a cron job, to circumvent deletion 😉).
 
-### (3. Maybe set [`JULIA_CPU_TARGET`](https://docs.julialang.org/en/v1/manual/environment-variables/#JULIA_CPU_TARGET) on heterogeneous clusters)
+### (Maybe set [`JULIA_CPU_TARGET`](https://docs.julialang.org/en/v1/manual/environment-variables/#JULIA_CPU_TARGET) on heterogeneous clusters)
 
 Login nodes and (groups of) compute nodes might have different CPU types.
 
