@@ -1,6 +1,6 @@
 # Working with Julia on HPC Clusters
 
-# Getting Started
+## Getting Started
 
 ### 1. Use the regular Julia binaries
 
@@ -42,7 +42,7 @@ More information:
 * [Specifying multiple system image targets](https://docs.julialang.org/en/v1/devdocs/sysimg/#Specifying-multiple-system-image-targets)
 
 
-# Workflow
+## Workflow
 
 ### Visual Studio Code (VS Code)
 
@@ -50,7 +50,7 @@ More information:
 * Running VS Code on cluster nodes
 * Making the Julia extension work (i.e. making it aware of a Julia module on the cluster).
 
-##### Running VS Code on a NERSC Perlmutter login node
+#### Running VS Code on a NERSC Perlmutter login node
 
 * We need the [Remote - SSH extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) (if not already installed).
 * We need **direct SSH access** to the node (ideally password-less ⇒ SSH config).
@@ -61,7 +61,7 @@ More information:
 
 After a second or two, you should have VS Code running on a Perlmutter login node! 🎉 
 
-##### Making the Julia extension work
+#### Making the Julia extension work
 
 The first thing you want to do is to install the [Julia VS Code extension](https://marketplace.visualstudio.com/items?itemName=julialang.language-julia). To do so, open the extensions view (`CTRL + SHIFT + X` or `CMD + SHIFT + X`), search for `julia`, and click on install.
 
@@ -86,17 +86,17 @@ Finally, we must point the Julia executable to the wrapper script. Open the VS C
 
 If `ALT/OPTION + J` followed by `ALT/OPTION + O` (or executing the `Julia: Start REPL` command) successfully spins up the integrated Julia REPL, you know that the setup is working! 🎉
 
-##### Running VS Code on a NERSC Perlmutter compute(!) node
+#### Running VS Code on a NERSC Perlmutter compute(!) node
 
 **Why?**
 * Accelerator access (e.g. GPU)
 * Running more expensive computations/visualizations interactively.
 
-Option 1 (recommended): `SSH ProxyJump` from the login node to the compute node.
+**Option 1 (recommended):** `SSH ProxyJump` from the login node to the compute node.
 * Won't work for your training account during this workshop.
 * Works with proper NERSC account.
 
-Option 2: VS Code [Remote Tunnels](https://code.visualstudio.com/docs/remote/tunnels)
+**Option 2:** VS Code [Remote Tunnels](https://code.visualstudio.com/docs/remote/tunnels)
 * Works even without direct SSH access to the compute nodes. 👍
 * Microsoft will provide the tunnel (through the internet). 👎
 * Requires a Microsoft/GitHub account.
