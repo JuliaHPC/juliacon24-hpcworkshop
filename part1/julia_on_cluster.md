@@ -23,7 +23,7 @@
 
 **Watch out:** Files on the PFS ("*scratch*") may be deleted automatically after a certain time period. (Pro tip: `touch` the files recursively every once in a while, e.g. in a cron job, to circumvent deletion 😉).
 
-### (Maybe set [`JULIA_CPU_TARGET`](https://docs.julialang.org/en/v1/manual/environment-variables/#JULIA_CPU_TARGET) on heterogeneous clusters)
+### (On heterogeneous clusters: [`JULIA_CPU_TARGET`](https://docs.julialang.org/en/v1/manual/environment-variables/#JULIA_CPU_TARGET))
 
 Login nodes and (groups of) compute nodes might have different CPU types.
 
@@ -35,7 +35,7 @@ Julia supports **multiversioning**:
 export JULIA_CPU_TARGET="generic;znver3,clone_all;skylake,clone_all"
 ```
 
-which leads to three different variants: one for Intel Skylake, one for AMD Zen 3, and a generic fallback.
+Will compile three different variants: one for Intel Skylake, one for AMD Zen 3, and a generic fallback.
 
 More information:
 * [JULIA_CPU_TARGET](https://docs.julialang.org/en/v1/manual/environment-variables/#JULIA_CPU_TARGET)
