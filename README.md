@@ -8,6 +8,8 @@ To get the most out of the workshop, you need to apply for a NERSC training acco
 
 **Please only apply for an account if you 1) have a workshop ticket and 2) really plan to participate in the JuliaCon 2024 workshop on Tuesday, July 9 in person!**
 
+### Sign up for an account
+
 To apply for an account:
 1. Go to https://iris.nersc.gov/train
 2. Fill out the application form with your details and use the training code that you've received by email.
