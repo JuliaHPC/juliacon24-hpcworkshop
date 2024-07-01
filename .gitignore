@@ -1,2 +1,9 @@
+# misc
 .DS_Store
 .vscode
+
+# julia
+Manifest.toml
+
+# output
+out*
