@@ -17,3 +17,5 @@ To apply for an account:
 4. You can already start experimenting once your account has been approved. Your training account will be availabe until July 14th (end of JuliaCon). Accounts get deleted afterwards, so remember to **backup your data** before July 14th.
 
 If you are facing any issues, please reach out to Carsten Bauer (crstnbr@gmail.com).
+
+If your institution is not listed in the drop down menu at  https://iris.nersc.gov/train, then please choose "Training Account Only - Org Not Listed", and put your organization name in the "Department" field next.
