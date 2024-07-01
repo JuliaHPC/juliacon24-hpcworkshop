@@ -8,6 +8,11 @@ using Printf, CairoMakie
 macro qx() esc(:(.-D * diff(C[:, 2:end-1], dims=1) / dx)) end
 macro qy() esc(:(.-D * diff(C[2:end-1, :], dims=2) / dy)) end
 
+function diffusion_step!(C, D, dt, dx, dy)
+    C[2:end-1, 2:end-1] .-= dt * (diff(@qx(), dims=1) / dx .+ diff(@qy(), dims=2) / dy)
+    return
+end
+
 @views function diffusion_2D(nx=64; do_vis=false)
     # Physics
     lx, ly = 10.0, 10.0
@@ -33,7 +38,7 @@ macro qy() esc(:(.-D * diff(C[2:end-1, :], dims=2) / dy)) end
     # Time loop
     for it = 1:nt
         (it == 11) && (t_tic = Base.time()) # time after warmup
-        C[2:end-1, 2:end-1] .-= dt * (diff(@qx(), dims=1) / dx .+ diff(@qy(), dims=2) / dy)
+        diffusion_step!(C, D, dt, dx, dy)
         do_vis && (it % nout == 0) && (hm[3] = Array(C); display(fig))
     end
     t_toc = (Base.time() - t_tic)

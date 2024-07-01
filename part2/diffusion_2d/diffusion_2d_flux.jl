@@ -4,10 +4,6 @@ using Printf, CairoMakie
 # enable plotting by default
 (!@isdefined do_vis) && (do_vis = true)
 
-# avoid flux arrays
-macro qx() esc(:(.-D * diff(C[:, 2:end-1], dims=1) / dx)) end
-macro qy() esc(:(.-D * diff(C[2:end-1, :], dims=2) / dy)) end
-
 @views function diffusion_2D(nx=64; do_vis=false)
     # Physics
     lx, ly = 10.0, 10.0
@@ -19,6 +15,9 @@ macro qy() esc(:(.-D * diff(C[2:end-1, :], dims=2) / dy)) end
     # Derived numerics
     dx, dy = lx / nx, ly / ny
     dt     = min(dx, dy)^2 / D / 4.1
+    # Array allocation
+    qx     = zeros(nx - 1, ny - 2)
+    qy     = zeros(nx - 2, ny - 1)
     # Initial condition
     xc     = [ix * dx - dx / 2 - 0.5 * lx for ix = 1:nx]
     yc     = [iy * dy - dy / 2 - 0.5 * ly for iy = 1:ny]
@@ -33,7 +32,9 @@ macro qy() esc(:(.-D * diff(C[2:end-1, :], dims=2) / dy)) end
     # Time loop
     for it = 1:nt
         (it == 11) && (t_tic = Base.time()) # time after warmup
-        C[2:end-1, 2:end-1] .-= dt * (diff(@qx(), dims=1) / dx .+ diff(@qy(), dims=2) / dy)
+        qx .= .-D * diff(C[:, 2:end-1], dims=1) / dx
+        qy .= .-D * diff(C[2:end-1, :], dims=2) / dy
+        C[2:end-1, 2:end-1] .-= dt * (diff(qx, dims=1) / dx .+ diff(qy, dims=2) / dy)
         do_vis && (it % nout == 0) && (hm[3] = Array(C); display(fig))
     end
     t_toc = (Base.time() - t_tic)
