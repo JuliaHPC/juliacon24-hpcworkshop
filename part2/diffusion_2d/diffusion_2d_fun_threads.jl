@@ -5,10 +5,20 @@ using Printf, CairoMakie
 (!@isdefined do_vis) && (do_vis = true)
 
 # avoid flux arrays
-macro qx() esc(:(.-D .* diff(C[:, 2:end-1], dims=1) ./ dx)) end
-macro qy() esc(:(.-D .* diff(C[2:end-1, :], dims=2) ./ dy)) end
+macro qx(ix, iy) esc(:(-D * (C[$ix+1, $iy] - C[$ix, $iy]) / dx)) end
+macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) / dy)) end
 
-@views function diffusion_2D(nx=64; do_vis=false)
+function diffusion_step!(C2, C, D, dt, dx, dy)
+    Threads.@threads for iy ∈ 1:size(C, 2)-2
+        for ix ∈ 1:size(C, 1)-2
+            C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix+1, iy+1) - @qx(ix, iy+1)) / dx +
+                                                   (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / dy)
+        end
+    end
+    return
+end
+
+function diffusion_2D(nx=64; do_vis=false)
     # Physics
     lx, ly = 10.0, 10.0
     D      = 1.0
@@ -18,11 +28,12 @@ macro qy() esc(:(.-D .* diff(C[2:end-1, :], dims=2) ./ dy)) end
     nout   = 2nx
     # Derived numerics
     dx, dy = lx / nx, ly / ny
-    dt     = min(dx, dy)^2 / D / 4.1
+    dt     = min(dx, dy)^2 / D / 4.1 / 2
     # Initial condition
     xc     = [ix * dx - dx / 2 - 0.5 * lx for ix = 1:nx]
     yc     = [iy * dy - dy / 2 - 0.5 * ly for iy = 1:ny]
     C      = exp.(.-xc .^ 2 .- yc' .^ 2)
+    C2     = copy(C)
     t_tic  = 0.0
     # visu
     if do_vis
@@ -35,7 +46,8 @@ macro qy() esc(:(.-D .* diff(C[2:end-1, :], dims=2) ./ dy)) end
     # Time loop
     for it = 1:nt
         (it == 11) && (t_tic = Base.time()) # time after warmup
-        C[2:end-1, 2:end-1] .-= dt * (diff(@qx(), dims=1) / dx .+ diff(@qy(), dims=2) / dy)
+        diffusion_step!(C2, C, D, dt, dx, dy)
+        C, C2 = C2, C # pointer swap
         do_vis && (it % nout == 0) && (hm[3] = Array(C); display(fig))
     end
     t_toc = (Base.time() - t_tic)

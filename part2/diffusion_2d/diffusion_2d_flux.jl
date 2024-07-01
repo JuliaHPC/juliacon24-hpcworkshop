@@ -8,10 +8,10 @@ using Printf, CairoMakie
     # Physics
     lx, ly = 10.0, 10.0
     D      = 1.0
-    nt     = 200nx
+    nt     = 10nx
     # Numerics
     ny     = nx
-    nout   = 50nx
+    nout   = 2nx
     # Derived numerics
     dx, dy = lx / nx, ly / ny
     dt     = min(dx, dy)^2 / D / 4.1
@@ -27,16 +27,16 @@ using Printf, CairoMakie
     if do_vis
         fig = Figure(; size=(500, 400), fontsize=14)
         ax  = Axis(fig[1, 1][1, 1]; aspect=DataAspect(), title="C")
-        hm  = heatmap!(ax, xc, yc, Array(C); colormap=:turbo)
+        hm  = heatmap!(ax, xc, yc, Array(C); colormap=:turbo, colorrange=(0, 1))
         cb  = Colorbar(fig[1, 1][1, 2], hm)
         display(fig)
     end
     # Time loop
     for it = 1:nt
         (it == 11) && (t_tic = Base.time()) # time after warmup
-        qx .= .-D * diff(C[:, 2:end-1], dims=1) / dx
-        qy .= .-D * diff(C[2:end-1, :], dims=2) / dy
-        C[2:end-1, 2:end-1] .-= dt * (diff(qx, dims=1) / dx .+ diff(qy, dims=2) / dy)
+        qx .= .-D .* diff(C[:, 2:end-1], dims=1) ./ dx
+        qy .= .-D .* diff(C[2:end-1, :], dims=2) ./ dy
+        C[2:end-1, 2:end-1] .-= dt .* (diff(qx, dims=1) ./ dx .+ diff(qy, dims=2) ./ dy)
         do_vis && (it % nout == 0) && (hm[3] = Array(C); display(fig))
     end
     t_toc = (Base.time() - t_tic)
@@ -44,4 +44,4 @@ using Printf, CairoMakie
     return
 end
 
-diffusion_2D(64; do_vis)
+diffusion_2D(256; do_vis)
