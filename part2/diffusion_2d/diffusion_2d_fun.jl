@@ -30,11 +30,13 @@ end
     C      = exp.(.-xc .^ 2 .- yc' .^ 2)
     t_tic  = 0.0
     # visu
-    fig = Figure(; size=(500, 400), fontsize=14)
-    ax  = Axis(fig[1, 1][1, 1]; aspect=DataAspect(), title="C")
-    hm  = heatmap!(ax, xc, yc, Array(C); colormap=:turbo)
-    cb  = Colorbar(fig[1, 1][1, 2], hm)
-    display(fig)
+    if do_vis
+        fig = Figure(; size=(500, 400), fontsize=14)
+        ax  = Axis(fig[1, 1][1, 1]; aspect=DataAspect(), title="C")
+        hm  = heatmap!(ax, xc, yc, Array(C); colormap=:turbo)
+        cb  = Colorbar(fig[1, 1][1, 2], hm)
+        display(fig)
+    end
     # Time loop
     for it = 1:nt
         (it == 11) && (t_tic = Base.time()) # time after warmup
