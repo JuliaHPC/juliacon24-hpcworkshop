@@ -22,7 +22,6 @@ using Printf, CairoMakie
     xc     = [ix * dx - dx / 2 - 0.5 * lx for ix = 1:nx]
     yc     = [iy * dy - dy / 2 - 0.5 * ly for iy = 1:ny]
     C      = exp.(.-xc .^ 2 .- yc' .^ 2)
-    t_tic  = 0.0
     # visu
     fig = Figure(; size=(500, 400), fontsize=14)
     ax  = Axis(fig[1, 1][1, 1]; aspect=DataAspect(), title="C")
@@ -30,6 +29,7 @@ using Printf, CairoMakie
     cb  = Colorbar(fig[1, 1][1, 2], hm)
     display(fig)
     # Time loop
+    t_tic  = 0.0
     for it = 1:nt
         (it == 11) && (t_tic = Base.time()) # time after warmup
         qx .= .-D * diff(C[:, 2:end-1], dims=1) / dx
