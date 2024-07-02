@@ -1,4 +1,5 @@
 # Script for benchmarking and comparing the multithreaded variants.
+# Supposed to be run with 8 threads on an entire (exclusive) compute node.
 using ThreadPinning
 
 if Threads.nthreads() != 8
