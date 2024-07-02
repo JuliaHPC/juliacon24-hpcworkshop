@@ -15,7 +15,7 @@ function diffusion_step!(C2, C, D, dt, dx, dy)
     for iy ∈ 1:size(C, 2)-2
         for ix ∈ 1:size(C, 1)-2
             @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix+1, iy+1) - @qx(ix, iy+1)) / dx +
-                                                   (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / dy)
+                                                             (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / dy)
         end
     end
     return

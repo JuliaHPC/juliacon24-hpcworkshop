@@ -36,7 +36,7 @@ macro qy() esc(:(.-D .* diff(C[2:end-1, :], dims=2) ./ dy)) end
     # Time loop
     for it = 1:nt
         (it == 11) && (t_tic = Base.time()) # time after warmup
-        C[2:end-1, 2:end-1] .-= dt * (diff(@qx(), dims=1) / dx .+ diff(@qy(), dims=2) / dy)
+        C[2:end-1, 2:end-1] .-= dt .* (diff(@qx(), dims=1) ./ dx .+ diff(@qy(), dims=2) ./ dy)
         do_vis && (it % nout == 0) && (hm[3] = Array(C); display(fig))
     end
     t_toc = (Base.time() - t_tic)

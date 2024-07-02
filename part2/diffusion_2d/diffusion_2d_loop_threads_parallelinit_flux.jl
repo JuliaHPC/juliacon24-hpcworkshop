@@ -7,14 +7,14 @@ using Printf, CairoMakie
 (!@isdefined do_exec) && (do_exec = true)
 
 function compute_fluxes!(qx, qy, C, D, dx, dy, nx, ny)
-    Threads.@threads :static for j in 2:(ny-1)
-        for i in 1:(nx-1)
-            @inbounds qx[i, j-1] = -D * (C[i+1, j] - C[i, j]) / dx
+    Threads.@threads :static for iy in 2:(ny-1)
+        for ix in 1:(nx-1)
+            @inbounds qx[ix, iy-1] = -D * (C[ix+1, iy] - C[ix, iy]) / dx
         end
     end
-    Threads.@threads :static for j in 1:(ny-1)
-        for i in 2:(nx-1)
-            @inbounds qy[i-1, j] = -D * (C[i, j+1] - C[i, j]) / dy
+    Threads.@threads :static for iy in 1:(ny-1)
+        for ix in 2:(nx-1)
+            @inbounds qy[ix-1, iy] = -D * (C[ix, iy+1] - C[ix, iy]) / dy
         end
     end
     return nothing
@@ -22,11 +22,11 @@ end
 
 function diffusion_step!(C, dt, dx, dy, qx, qy)
     nx, ny = size(C)
-    Threads.@threads :static for j in 2:(ny-1)
-        for i in 2:(nx-1)
-            @inbounds C[i, j] = C[i, j] - dt *
-                                        ((qx[i, j-1] - qx[i-1, j-1]) / dx +
-                                        (qy[i-1, j] - qy[i-1, j-1]) / dy)
+    Threads.@threads :static for iy in 2:(ny-1)
+        for ix in 2:(nx-1)
+            @inbounds C[ix, iy] = C[ix, iy] - dt *
+                                        ((qx[ix, iy-1] - qx[ix-1, iy-1]) / dx +
+                                         (qy[ix-1, iy] - qy[ix-1, iy-1]) / dy)
         end
     end
     return
@@ -49,19 +49,19 @@ function diffusion_2D(nx=64; do_vis=false, nt=10nx)
     C      = Matrix{Float64}(undef, nx, ny)
     qx     = Matrix{Float64}(undef, nx - 1, ny - 2)
     qy     = Matrix{Float64}(undef, nx - 2, ny - 1)
-    Threads.@threads :static for j in axes(C, 2)
-        for i in axes(C, 1)
-            C[i, j] = exp(- xc[i]^2 - yc[j]^2)
+    Threads.@threads :static for iy in axes(C, 2)
+        for ix in axes(C, 1)
+            C[ix, iy] = exp(- xc[ix]^2 - yc[iy]^2)
         end
     end
-    Threads.@threads :static for j in axes(qx, 2)
-        for i in axes(qx, 1)
-            qx[i, j] = 0.0
+    Threads.@threads :static for iy in axes(qx, 2)
+        for ix in axes(qx, 1)
+            qx[ix, iy] = 0.0
         end
     end
-    Threads.@threads :static for j in axes(qy, 2)
-        for i in axes(qy, 1)
-            qy[i, j] = 0.0
+    Threads.@threads :static for iy in axes(qy, 2)
+        for ix in axes(qy, 1)
+            qy[ix, iy] = 0.0
         end
     end
     t_tic  = 0.0

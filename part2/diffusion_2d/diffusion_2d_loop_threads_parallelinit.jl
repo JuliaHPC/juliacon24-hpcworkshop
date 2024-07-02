@@ -14,7 +14,7 @@ function diffusion_step!(C2, C, D, dt, dx, dy)
     Threads.@threads :static for iy ∈ 1:size(C, 2)-2
         for ix ∈ 1:size(C, 1)-2
             @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix+1, iy+1) - @qx(ix, iy+1)) / dx +
-                                                   (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / dy)
+                                                             (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / dy)
         end
     end
     return
@@ -36,10 +36,10 @@ function diffusion_2D(nx=64; do_vis=false, nt=10nx)
     C      = Matrix{Float64}(undef, nx, ny)
     C2     = Matrix{Float64}(undef, nx, ny)
     # parallel initialization
-    Threads.@threads :static for j in axes(C, 2)
-        for i in axes(C, 1)
-            C[i, j]  = exp(- xc[i]^2 - yc[j]^2)
-            C2[i, j] = C[i, j] # element-wise copy
+    Threads.@threads :static for iy in axes(C, 2)
+        for ix in axes(C, 1)
+            C[ix, iy]  = exp(- xc[ix]^2 - yc[iy]^2)
+            C2[ix, iy] = C[ix, iy] # element-wise copy
         end
     end
     t_tic  = 0.0
