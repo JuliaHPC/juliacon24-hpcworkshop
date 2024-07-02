@@ -1,5 +1,5 @@
-# 2D linear diffusion Julia MPI solver
-# run: ~/.julia/bin/mpiexecjl -n 4 julia --project diffusion_2D.jl
+# 2D linear diffusion CUDA-aware MPI solver
+# run: ~/.julia/bin/mpiexecjl -n 4 julia --project diffusion_2d_mpi_cudaaware.jl
 using Printf, JLD2
 import MPI
 
@@ -72,8 +72,8 @@ end
     dx, dy = lx / nx_g, ly / ny_g
     dt     = min(dx, dy)^2 / D / 4.1
     # Array allocation
-    qx     = zeros(Float64, nx - 1, ny - 2)
-    qy     = zeros(Float64, nx - 2, ny - 1)
+    qx     = CUDA.zeros(Float64, nx - 1, ny - 2)
+    qy     = CUDA.zeros(Float64, nx - 2, ny - 1)
     # Initial condition
     x0, y0 = coords[1] * (nx - 2) * dx, coords[2] * (ny - 2) * dy
     xc     = [x0 + ix * dx - dx / 2 - 0.5 * lx for ix = 1:nx]

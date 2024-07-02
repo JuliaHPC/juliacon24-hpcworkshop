@@ -1,5 +1,5 @@
-# 2D linear diffusion Julia MPI solver
-# run: ~/.julia/bin/mpiexecjl -n 4 julia --project diffusion_2D.jl
+# 2D linear diffusion MPI solver
+# run: ~/.julia/bin/mpiexecjl -n 4 julia --project diffusion_2d_mpi_nonblock.jl
 using Printf, JLD2
 import MPI
 
