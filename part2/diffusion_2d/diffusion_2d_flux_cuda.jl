@@ -4,15 +4,16 @@ using CUDA
 
 # enable plotting by default
 (!@isdefined do_vis) && (do_vis = true)
+# enable execution by default
+(!@isdefined do_exec) && (do_exec = true)
 
-@views function diffusion_2D(nx=64; do_vis=false)
+@views function diffusion_2D(nx=64; do_vis=false, nt=10nx)
     # Physics
     lx, ly = 10.0, 10.0
     D      = 1.0
-    nt     = 10nx
     # Numerics
     ny     = nx
-    nout   = 2nx
+    nout   = floor(Int, nt / 5)
     # Derived numerics
     dx, dy = lx / nx, ly / ny
     dt     = min(dx, dy)^2 / D / 4.1
@@ -45,4 +46,6 @@ using CUDA
     return
 end
 
-diffusion_2D(256; do_vis)
+if do_exec
+    diffusion_2D(256; do_vis)
+end

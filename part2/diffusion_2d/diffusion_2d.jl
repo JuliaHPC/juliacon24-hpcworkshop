@@ -3,22 +3,23 @@ using Printf, CairoMakie
 
 # enable plotting by default
 (!@isdefined do_vis) && (do_vis = true)
+# enable execution by default
+(!@isdefined do_exec) && (do_exec = true)
 
 # avoid flux arrays
 macro qx() esc(:(.-D .* diff(C[:, 2:end-1], dims=1) ./ dx)) end
 macro qy() esc(:(.-D .* diff(C[2:end-1, :], dims=2) ./ dy)) end
 
-@views function diffusion_2D(nx=64; do_vis=false)
+@views function diffusion_2D(nx=64; do_vis=false, nt=10nx)
     # Physics
     lx, ly = 10.0, 10.0
     D      = 1.0
-    nt     = 10nx
     # Numerics
     ny     = nx
-    nout   = 2nx
+    nout   = floor(Int, nt / 5)
     # Derived numerics
     dx, dy = lx / nx, ly / ny
-    dt     = min(dx, dy)^2 / D / 4.1
+    dt     = min(dx, dy)^2 / D / 4.1 / 2
     # Initial condition
     xc     = [ix * dx - dx / 2 - 0.5 * lx for ix = 1:nx]
     yc     = [iy * dy - dy / 2 - 0.5 * ly for iy = 1:ny]
@@ -43,4 +44,6 @@ macro qy() esc(:(.-D .* diff(C[2:end-1, :], dims=2) ./ dy)) end
     return
 end
 
-diffusion_2D(256; do_vis)
+if do_exec
+    diffusion_2D(256; do_vis)
+end

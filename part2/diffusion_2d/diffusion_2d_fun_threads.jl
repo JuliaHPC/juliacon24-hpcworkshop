@@ -3,29 +3,30 @@ using Printf, CairoMakie
 
 # enable plotting by default
 (!@isdefined do_vis) && (do_vis = true)
+# enable execution by default
+(!@isdefined do_exec) && (do_exec = true)
 
 # avoid flux arrays
 macro qx(ix, iy) esc(:(-D * (C[$ix+1, $iy] - C[$ix, $iy]) / dx)) end
 macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) / dy)) end
 
 function diffusion_step!(C2, C, D, dt, dx, dy)
-    Threads.@threads for iy ∈ 1:size(C, 2)-2
+    Threads.@threads :static for iy ∈ 1:size(C, 2)-2
         for ix ∈ 1:size(C, 1)-2
-            C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix+1, iy+1) - @qx(ix, iy+1)) / dx +
+            @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix+1, iy+1) - @qx(ix, iy+1)) / dx +
                                                    (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / dy)
         end
     end
     return
 end
 
-function diffusion_2D(nx=64; do_vis=false)
+function diffusion_2D(nx=64; do_vis=false, nt=10nx)
     # Physics
     lx, ly = 10.0, 10.0
     D      = 1.0
-    nt     = 10nx
     # Numerics
     ny     = nx
-    nout   = 2nx
+    nout   = floor(Int, nt / 5)
     # Derived numerics
     dx, dy = lx / nx, ly / ny
     dt     = min(dx, dy)^2 / D / 4.1 / 2
@@ -55,4 +56,7 @@ function diffusion_2D(nx=64; do_vis=false)
     return
 end
 
-diffusion_2D(256; do_vis)
+if do_exec
+    diffusion_2D(256; do_vis)
+    # diffusion_2D(4096; do_vis, nt=400)
+end
