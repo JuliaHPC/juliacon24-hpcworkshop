@@ -14,7 +14,7 @@ macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) * inv(dy))) end
 function diffusion_step!(C2, C, D, dt, dx, dy)
     ix = (blockIdx().x - 1) * blockDim().x + threadIdx().x
     iy = (blockIdx().y - 1) * blockDim().y + threadIdx().y
-    if ix < size(C, 1)-2 && iy < size(C, 2)-2
+    if ix <= size(C, 1)-2 && iy <= size(C, 2)-2
         @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix + 1, iy + 1) - @qx(ix, iy + 1)) * inv(dx) +
                                                          (@qy(ix + 1, iy + 1) - @qy(ix + 1, iy)) * inv(dy))
     end

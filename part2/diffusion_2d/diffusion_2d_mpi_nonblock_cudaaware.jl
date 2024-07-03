@@ -16,11 +16,11 @@ import MPI
     reqs = MPI.MultiRequest(4)
     (neighbors.x[1] != MPI.PROC_NULL) && MPI.Irecv!(bufs.recv_1_1, comm, reqs[1]; source=neighbors.x[1])
     (neighbors.x[2] != MPI.PROC_NULL) && MPI.Irecv!(bufs.recv_1_2, comm, reqs[2]; source=neighbors.x[2])
-    # TODO make sure copyto! is done
+
     (neighbors.x[1] != MPI.PROC_NULL) && MPI.Isend(bufs.send_1_1, comm, reqs[3]; dest=neighbors.x[1])
     (neighbors.x[2] != MPI.PROC_NULL) && MPI.Isend(bufs.send_1_2, comm, reqs[4]; dest=neighbors.x[2])
-
     MPI.Waitall(reqs) # blocking
+
     (neighbors.x[1] != MPI.PROC_NULL) && copyto!(A[1  , :], bufs.recv_1_1)
     (neighbors.x[2] != MPI.PROC_NULL) && copyto!(A[end, :], bufs.recv_1_2)
 
@@ -31,11 +31,11 @@ import MPI
     reqs = MPI.MultiRequest(4)
     (neighbors.y[1] != MPI.PROC_NULL) && MPI.Irecv!(bufs.recv_2_1, comm, reqs[1]; source=neighbors.y[1])
     (neighbors.y[2] != MPI.PROC_NULL) && MPI.Irecv!(bufs.recv_2_2, comm, reqs[2]; source=neighbors.y[2])
-    # TODO make sure copyto! is done
+
     (neighbors.y[1] != MPI.PROC_NULL) && MPI.Isend(bufs.send_2_1, comm, reqs[3]; dest=neighbors.y[1])
     (neighbors.y[2] != MPI.PROC_NULL) && MPI.Isend(bufs.send_2_2, comm, reqs[4]; dest=neighbors.y[2])
-
     MPI.Waitall(reqs) # blocking
+
     (neighbors.y[1] != MPI.PROC_NULL) && copyto!(A[:, 1  ], bufs.recv_2_1)
     (neighbors.y[2] != MPI.PROC_NULL) && copyto!(A[:, end], bufs.recv_2_2)
     return

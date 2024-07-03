@@ -10,9 +10,8 @@ import MPI
 # MPI functions
 @views function update_halo!(A, bufs, neighbors, comm)
     # dim-1 (x)
-    (neighbors.x[1] != MPI.PROC_NULL) && copyto!(bufs.send_1_1, A[2    , :]); CUDA.synchronize()
-    (neighbors.x[2] != MPI.PROC_NULL) && copyto!(bufs.send_1_2, A[end-1, :]); CUDA.synchronize()
-    CUDA.synchronize()
+    (neighbors.x[1] != MPI.PROC_NULL) && copyto!(bufs.send_1_1, A[2    , :])
+    (neighbors.x[2] != MPI.PROC_NULL) && copyto!(bufs.send_1_2, A[end-1, :])
 
     reqs = MPI.MultiRequest(4)
     (neighbors.x[1] != MPI.PROC_NULL) && MPI.Irecv!(bufs.recv_1_1, comm, reqs[1]; source=neighbors.x[1])
@@ -20,16 +19,14 @@ import MPI
 
     (neighbors.x[1] != MPI.PROC_NULL) && MPI.Isend(bufs.send_1_1, comm, reqs[3]; dest=neighbors.x[1])
     (neighbors.x[2] != MPI.PROC_NULL) && MPI.Isend(bufs.send_1_2, comm, reqs[4]; dest=neighbors.x[2])
-
     MPI.Waitall(reqs) # blocking
-    (neighbors.x[1] != MPI.PROC_NULL) && copyto!(A[1  , :], bufs.recv_1_1); CUDA.synchronize()
-    (neighbors.x[2] != MPI.PROC_NULL) && copyto!(A[end, :], bufs.recv_1_2); CUDA.synchronize()
-    CUDA.synchronize()
+
+    (neighbors.x[1] != MPI.PROC_NULL) && copyto!(A[1  , :], bufs.recv_1_1)
+    (neighbors.x[2] != MPI.PROC_NULL) && copyto!(A[end, :], bufs.recv_1_2)
 
     # dim-2 (y)
-    (neighbors.y[1] != MPI.PROC_NULL) && copyto!(bufs.send_2_1, A[:, 2    ]); CUDA.synchronize()
-    (neighbors.y[2] != MPI.PROC_NULL) && copyto!(bufs.send_2_2, A[:, end-1]); CUDA.synchronize()
-    CUDA.synchronize()
+    (neighbors.y[1] != MPI.PROC_NULL) && copyto!(bufs.send_2_1, A[:, 2    ])
+    (neighbors.y[2] != MPI.PROC_NULL) && copyto!(bufs.send_2_2, A[:, end-1])
 
     reqs = MPI.MultiRequest(4)
     (neighbors.y[1] != MPI.PROC_NULL) && MPI.Irecv!(bufs.recv_2_1, comm, reqs[1]; source=neighbors.y[1])
@@ -37,11 +34,10 @@ import MPI
 
     (neighbors.y[1] != MPI.PROC_NULL) && MPI.Isend(bufs.send_2_1, comm, reqs[3]; dest=neighbors.y[1])
     (neighbors.y[2] != MPI.PROC_NULL) && MPI.Isend(bufs.send_2_2, comm, reqs[4]; dest=neighbors.y[2])
-
     MPI.Waitall(reqs) # blocking
-    (neighbors.y[1] != MPI.PROC_NULL) && copyto!(A[:, 1  ], bufs.recv_2_1); CUDA.synchronize()
-    (neighbors.y[2] != MPI.PROC_NULL) && copyto!(A[:, end], bufs.recv_2_2); CUDA.synchronize()
-    CUDA.synchronize()
+
+    (neighbors.y[1] != MPI.PROC_NULL) && copyto!(A[:, 1  ], bufs.recv_2_1)
+    (neighbors.y[2] != MPI.PROC_NULL) && copyto!(A[:, end], bufs.recv_2_2)
     return
 end
 
@@ -59,7 +55,7 @@ macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) * inv(dy))) end
 function diffusion_step!(C2, C, D, dt, dx, dy)
     ix = (blockIdx().x - 1) * blockDim().x + threadIdx().x
     iy = (blockIdx().y - 1) * blockDim().y + threadIdx().y
-    if ix < size(C, 1)-2 && iy < size(C, 2)-2
+    if ix <= size(C, 1)-2 && iy <= size(C, 2)-2
         @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix + 1, iy + 1) - @qx(ix, iy + 1)) * inv(dx) +
                                                          (@qy(ix + 1, iy + 1) - @qy(ix + 1, iy)) * inv(dy))
     end
@@ -107,7 +103,6 @@ end
     for it = 1:nt
         (it == 11) && (t_tic = Base.time()) # time after warmup
         @cuda threads = nthreads blocks = nblocks diffusion_step!(C2, C, D, dt, dx, dy)
-        CUDA.synchronize()
         update_halo!(C2, bufs, neighbors, comm_cart)
         C, C2 = C2, C # pointer swap
     end
