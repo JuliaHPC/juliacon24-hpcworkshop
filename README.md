@@ -25,5 +25,7 @@ If you are facing any issues, please reach out to Carsten Bauer (crstnbr@gmail.c
 Ideally, you already do the following things before the workshop (but there will also be time to do them in Eindhoven):
 * Make sure that you have [VS Code](https://code.visualstudio.com/download) installed.
 * Follow the [VS Code and Julia on Perlmutter](help/vscode_julia_on_perlmutter.md) instructions to run Julia within VS Code remotely on a Perlmutter login node.
-* Clone the workshop materials on Perlmutter, i.e. run `git clone https://github.com/JuliaHPC/juliacon24-hpcworkshop` in a (VS Code) terminal on Perlmutter.
-    * (You will have to run `git pull` on workshop day to get the latest version.)
+* Clone the workshop materials on Perlmutter, i.e. run    
+`git clone https://github.com/JuliaHPC/juliacon24-hpcworkshop`   
+in a (VS Code) terminal on Perlmutter.
+    * You will have to run `git pull` on workshop day to get the latest version.
