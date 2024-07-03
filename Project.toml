@@ -1,5 +1,7 @@
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+CpuId = "adafc99b-e345-5852-983c-f28acb93d879"
+Hwloc = "0e44f5e4-bd66-52a0-8798-143a42290a1d"
 JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
 MPI = "da04e1cc-30fd-572f-bb4f-1f8673147195"
 ThreadPinning = "811555cd-349b-4f26-b7bc-1f208b848042"
