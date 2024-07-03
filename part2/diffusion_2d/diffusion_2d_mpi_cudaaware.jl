@@ -1,6 +1,7 @@
 # 2D linear diffusion CUDA-aware MPI solver
 # run: ~/.julia/bin/mpiexecjl -n 4 julia --project diffusion_2d_mpi_cudaaware.jl
 using Printf, JLD2
+using CUDA
 import MPI
 
 # enable plotting by default
@@ -51,10 +52,10 @@ end
     comm   = MPI.COMM_WORLD
     nprocs = MPI.Comm_size(comm)
     MPI.Dims_create!(nprocs, dims)
-    comm_cart   = MPI.Cart_create(comm, dims, [0, 0], 1)
-    me          = MPI.Comm_rank(comm_cart)
-    coords      = MPI.Cart_coords(comm_cart)
-    neighbors   = (; x=MPI.Cart_shift(comm_cart, 0, 1), y=MPI.Cart_shift(comm_cart, 1, 1))
+    comm_cart = MPI.Cart_create(comm, dims, [0, 0], 1)
+    me        = MPI.Comm_rank(comm_cart)
+    coords    = MPI.Cart_coords(comm_cart)
+    neighbors = (; x=MPI.Cart_shift(comm_cart, 0, 1), y=MPI.Cart_shift(comm_cart, 1, 1))
     # select GPU on multi-GPU system based on shared memory topology
     comm_l = MPI.Comm_split_type(comm, MPI.COMM_TYPE_SHARED, me)
     me_l   = MPI.Comm_rank(comm_l)
