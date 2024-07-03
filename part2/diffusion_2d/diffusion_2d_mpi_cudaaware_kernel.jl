@@ -45,6 +45,20 @@ function init_bufs(A)
               recv_1=CUDA.zeros(Float64, size(A, 1)), recv_2=CUDA.zeros(Float64, size(A, 2)))
 end
 
+# avoid flux arrays
+macro qx(ix, iy) esc(:(-D * (C[$ix+1, $iy] - C[$ix, $iy]) * inv(dx))) end
+macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) * inv(dy))) end
+
+function diffusion_step!(C2, C, D, dt, dx, dy)
+    ix = (blockIdx().x - 1) * blockDim().x + threadIdx().x
+    iy = (blockIdx().y - 1) * blockDim().y + threadIdx().y
+    if ix < size(C, 1)-2 && iy < size(C, 2)-2
+        @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix + 1, iy + 1) - @qx(ix, iy + 1)) * inv(dx) +
+                                                         (@qy(ix + 1, iy + 1) - @qy(ix + 1, iy)) * inv(dy))
+    end
+    return
+end
+
 @views function diffusion_2D_mpi(nx=32; do_save=false)
     # MPI
     MPI.Init()
@@ -68,6 +82,8 @@ end
     nt     = 10nx
     # Numerics
     ny         = nx  # local number of grid points
+    nthreads   = 32, 8
+    nblocks    = cld.((nx, ny), nthreads)
     nx_g, ny_g = dims[1] * (nx - 2) + 2, dims[2] * (ny - 2) + 2  # global number of grid points
     # Derived numerics
     dx, dy = lx / nx_g, ly / ny_g
@@ -80,16 +96,20 @@ end
     xc     = [x0 + ix * dx - dx / 2 - 0.5 * lx for ix = 1:nx]
     yc     = [y0 + iy * dy - dy / 2 - 0.5 * ly for iy = 1:ny]
     C      = CuArray(exp.(.-xc .^ 2 .- yc' .^ 2))
+    C2     = copy(C)
     bufs   = init_bufs(C)
     t_tic  = 0.0
     # Time loop
     for it = 1:nt
         (it == 11) && (t_tic = Base.time()) # time after warmup
-        qx .= .-D .* diff(C[:, 2:end-1], dims=1) ./ dx
-        qy .= .-D .* diff(C[2:end-1, :], dims=2) ./ dy
-        C[2:end-1, 2:end-1] .-= dt .* (diff(qx, dims=1) ./ dx .+ diff(qy, dims=2) ./ dy)
-        update_halo!(C, bufs, neighbors, comm_cart)
+        # qx .= .-D .* diff(C[:, 2:end-1], dims=1) ./ dx
+        # qy .= .-D .* diff(C[2:end-1, :], dims=2) ./ dy
+        # C[2:end-1, 2:end-1] .-= dt .* (diff(qx, dims=1) ./ dx .+ diff(qy, dims=2) ./ dy)
+        @cuda threads = nthreads blocks = nblocks diffusion_step!(C2, C, D, dt, dx, dy)
+        update_halo!(C2, bufs, neighbors, comm_cart)
+        C, C2 = C2, C # pointer swap
     end
+    CUDA.synchronize()
     t_toc = (Base.time() - t_tic)
     (me == 0) && @printf("Time = %1.4e s, T_eff = %1.2f GB/s \n", t_toc, round((2 / 1e9 * nx * ny * sizeof(lx)) / (t_toc / (nt - 10)), sigdigits=2))
     # Save to visualise

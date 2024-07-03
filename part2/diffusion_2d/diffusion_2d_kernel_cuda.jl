@@ -28,7 +28,6 @@ function diffusion_2D(nx=64; do_vis=false)
     nt     = 500
     # Numerics
     ny       = nx
-    nout     = floor(Int, nt / 5)
     nthreads = 32, 8
     nblocks  = cld.((nx, ny), nthreads)
     # Derived numerics
@@ -54,7 +53,7 @@ function diffusion_2D(nx=64; do_vis=false)
         @cuda threads = nthreads blocks = nblocks diffusion_step!(C2, C, D, dt, dx, dy)
         C, C2 = C2, C # pointer swap
     end
-    CUDA.synchronize()
+    CUDA.synchronize() # needed for accurate timing
     t_toc = (Base.time() - t_tic)
     @printf("Time = %1.4e s, T_eff = %1.2f GB/s \n", t_toc, round((2 / 1e9 * nx * ny * sizeof(eltype(C))) / (t_toc / (nt - 10)), sigdigits=6))
     do_vis && (hm[3] = Array(C); display(fig))

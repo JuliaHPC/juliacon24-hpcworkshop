@@ -40,8 +40,8 @@ import MPI
 end
 
 function init_bufs(A)
-    return bufs = (; send_1=zeros(size(A, 1)), send_2=zeros(size(A, 2)),
-                     recv_1=zeros(size(A, 1)), recv_2=zeros(size(A, 2)))
+    return (; send_1=zeros(size(A, 1)), send_2=zeros(size(A, 2)),
+              recv_1=zeros(size(A, 1)), recv_2=zeros(size(A, 2)))
 end
 
 @views function diffusion_2D_mpi(nx=32; do_save=false)
@@ -61,7 +61,7 @@ end
     D      = 1.0
     nt     = 10nx
     # Numerics
-    ny     = nx  # local number of grid points
+    ny         = nx  # local number of grid points
     nx_g, ny_g = dims[1] * (nx - 2) + 2, dims[2] * (ny - 2) + 2  # global number of grid points
     # Derived numerics
     dx, dy = lx / nx_g, ly / ny_g

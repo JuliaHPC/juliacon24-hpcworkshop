@@ -1,6 +1,7 @@
 # 2D linear diffusion MPI solver
 # run: ~/.julia/bin/mpiexecjl -n 4 julia --project diffusion_2d_mpi_nonblock_cudaaware.jl
 using Printf, JLD2
+using CUDA
 import MPI
 
 # enable plotting by default
@@ -41,10 +42,10 @@ import MPI
 end
 
 function init_bufs(A)
-    return bufs = (; send_1_1=CUDA.zeros(size(A, 2)), send_1_2=CUDA.zeros(size(A, 2)),
-                     send_2_1=CUDA.zeros(size(A, 1)), send_2_2=CUDA.zeros(size(A, 1)),
-                     recv_1_1=CUDA.zeros(size(A, 2)), recv_1_2=CUDA.zeros(size(A, 2)),
-                     recv_2_1=CUDA.zeros(size(A, 1)), recv_2_2=CUDA.zeros(size(A, 1)))
+    return (; send_1_1=CUDA.zeros(Float64, size(A, 2)), send_1_2=CUDA.zeros(Float64, size(A, 2)),
+              send_2_1=CUDA.zeros(Float64, size(A, 1)), send_2_2=CUDA.zeros(Float64, size(A, 1)),
+              recv_1_1=CUDA.zeros(Float64, size(A, 2)), recv_1_2=CUDA.zeros(Float64, size(A, 2)),
+              recv_2_1=CUDA.zeros(Float64, size(A, 1)), recv_2_2=CUDA.zeros(Float64, size(A, 1)))
 end
 
 @views function diffusion_2D_mpi(nx=32; do_save=false)
@@ -54,10 +55,10 @@ end
     comm   = MPI.COMM_WORLD
     nprocs = MPI.Comm_size(comm)
     MPI.Dims_create!(nprocs, dims)
-    comm_cart   = MPI.Cart_create(comm, dims, [0, 0], 1)
-    me          = MPI.Comm_rank(comm_cart)
-    coords      = MPI.Cart_coords(comm_cart)
-    neighbors   = (; x=MPI.Cart_shift(comm_cart, 0, 1), y=MPI.Cart_shift(comm_cart, 1, 1))
+    comm_cart = MPI.Cart_create(comm, dims, [0, 0], 1)
+    me        = MPI.Comm_rank(comm_cart)
+    coords    = MPI.Cart_coords(comm_cart)
+    neighbors = (; x=MPI.Cart_shift(comm_cart, 0, 1), y=MPI.Cart_shift(comm_cart, 1, 1))
     # select GPU on multi-GPU system based on shared memory topology
     comm_l = MPI.Comm_split_type(comm, MPI.COMM_TYPE_SHARED, me)
     me_l   = MPI.Comm_rank(comm_l)
@@ -69,7 +70,7 @@ end
     D      = 1.0
     nt     = 10nx
     # Numerics
-    ny     = nx  # local number of grid points
+    ny         = nx  # local number of grid points
     nx_g, ny_g = dims[1] * (nx - 2) + 2, dims[2] * (ny - 2) + 2  # global number of grid points
     # Derived numerics
     dx, dy = lx / nx_g, ly / ny_g
