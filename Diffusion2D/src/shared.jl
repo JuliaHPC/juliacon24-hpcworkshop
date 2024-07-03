@@ -5,7 +5,7 @@ function maybe_init_visualization(impl::AbstractImplementation, C)
         pts = range(start=ds / 2, stop=L - ds / 2, length=ns) .- 0.5 * L
         fig = Figure(; size=(500, 400), fontsize=14)
         ax  = Axis(fig[1, 1][1, 1]; aspect=DataAspect(), title="C")
-        plt  = heatmap!(ax, pts, pts, Array(C); colormap=:turbo, colorrange=(0, 1))
+        plt = heatmap!(ax, pts, pts, Array(C); colormap=:turbo, colorrange=(0, 1))
         cb  = Colorbar(fig[1, 1][1, 2], plt)
         display(fig)
         return fig, plt
@@ -37,18 +37,18 @@ macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) / ds)) end
 # TODO: should these initializations be shared?! Currently each only used by a single implementation.
 function initialize_arrays(impl::AbstractImplementation)
     (; L, ns, ds) = impl.params
-    pts    = range(start=ds / 2, stop=L - ds / 2, length=ns) .- 0.5 * L
-    C      = @. exp(-(pts)^2 -(pts')^2)
+    pts = range(start=ds / 2, stop=L - ds / 2, length=ns) .- 0.5 * L
+    C   = @. exp(-(pts)^2 -(pts')^2)
     return C, copy(C)
 end
 
 function initialize_arrays_with_flux(impl::AbstractImplementation)
     (; L, ns, ds) = impl.params
-    pts    = range(start=ds / 2, stop=L - ds / 2, length=ns) .- 0.5 * L
+    pts = range(start=ds / 2, stop=L - ds / 2, length=ns) .- 0.5 * L
     # diffusive field
-    C      = @. exp(-(pts)^2 -(pts')^2)
+    C = @. exp(-(pts)^2 -(pts')^2)
     # "flux" arrays (first order derivatives)
-    qx     = zeros(ns - 1, ns - 2)
-    qy     = zeros(ns - 2, ns - 1)
+    qx = zeros(ns - 1, ns - 2)
+    qy = zeros(ns - 2, ns - 1)
     return C, qx, qy
 end
