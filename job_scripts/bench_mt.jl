@@ -1,7 +1,6 @@
 # Script for benchmarking and comparing the multithreaded variants.
 # Supposed to be run with 8 threads on an entire (exclusive) compute node.
-include(joinpath(@__DIR__, "../Diffusion2D/Diffusion2D.jl"))
-using .Diffusion2D
+using Diffusion2D
 using ThreadPinning
 
 if Threads.nthreads() != 8

@@ -3,6 +3,7 @@ module Diffusion2D
 
 using Printf
 using CairoMakie
+using MPI
 
 Base.@kwdef struct Parameters
     # physical parameters

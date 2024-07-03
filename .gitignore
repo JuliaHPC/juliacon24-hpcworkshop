@@ -3,7 +3,7 @@
 .vscode
 
 # julia
-Manifest.toml
+# Manifest.toml
 
 # output
 out*
