@@ -34,7 +34,7 @@ using CUDA
         display(fig)
     end
     # Time loop
-    for it = 1:nt
+    for it in 1:nt
         (it == 11) && (t_tic = Base.time()) # time after warmup
         qx .= .-D .* diff(C[:, 2:end-1], dims=1) ./ dx
         qy .= .-D .* diff(C[2:end-1, :], dims=2) ./ dy

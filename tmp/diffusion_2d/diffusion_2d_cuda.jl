@@ -48,7 +48,7 @@ function diffusion_2D(nx=64; do_vis=false)
         display(fig)
     end
     # Time loop
-    for it = 1:nt
+    for it in 1:nt
         (it == 11) && (t_tic = Base.time()) # time after warmup
         @cuda threads = nthreads blocks = nblocks diffusion_step!(C2, C, D, dt, dx, dy)
         C, C2 = C2, C # pointer swap

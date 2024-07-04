@@ -11,8 +11,9 @@ macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) / ds)) end
 
 function diffusion_step!(params, C2, C)
     (; ds, dt, D) = params
-    for iy ∈ 1:size(C, 2)-2
-        for ix ∈ 1:size(C, 1)-2
+    # respect column major order
+    for iy in 1:size(C, 2)-2
+        for ix in 1:size(C, 1)-2
             @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix+1, iy+1) - @qx(ix, iy+1)) / ds +
                                                             (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / ds)
         end

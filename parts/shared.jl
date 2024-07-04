@@ -1,12 +1,27 @@
 ## PARAMETER INITIALIZATION
 function init_params(; ns=64, nt=100, kwargs...)
-    L  = 10.0                 # physical domain length
-    D  = 1.0                  # diffusion coefficient
-    ds = L / ns               # grid spacing
-    dt = ds^2 / D / 4.1       # time step
-    cs = range(start=ds / 2, stop=L - ds / 2, length=ns) .- 0.5 * L # vector of coord points
+    L    = 10.0                 # physical domain length
+    D    = 1.0                  # diffusion coefficient
+    ds   = L / ns               # grid spacing
+    dt   = ds^2 / D / 8.2       # time step
+    cs   = range(start=ds / 2, stop=L - ds / 2, length=ns) .- 0.5 * L # vector of coord points
     nout = floor(Int, nt / 5) # plotting frequency
     return (; L, D, ns, nt, ds, dt, cs, nout, kwargs...)
+end
+
+function init_params_mpi(; dims, coords, ns=64, nt=100, kwargs...)
+    L    = 10.0                    # physical domain length
+    D    = 1.0                     # diffusion coefficient
+    nx_g, ny_g = dims[1] * (ns - 2) + 2, dims[2] * (ns - 2) + 2  # global number of grid points
+    dx   = L / nx_g                # grid spacing
+    dy   = L / ny_g                # grid spacing
+    dt   = min(dx, dy)^2 / D / 8.2 # time step
+
+    x0   = coords[1] * (ns - 2) * dx
+    y0   = coords[2] * (ns - 2) * dy
+    xcs  = [x0 + ix * dx - dx / 2 - 0.5 * L for ix in 1:ns]
+    ycs  = [y0 + iy * dy - dy / 2 - 0.5 * L for iy in 1:ns]
+    return (; L, D, ns, nt, dx, dy, dt, xcs, ycs, kwargs...)
 end
 
 
@@ -22,6 +37,13 @@ end
 function init_arrays(params)
     (; cs) = params
     C  = @. exp(-cs^2 - (cs')^2)
+    C2 = copy(C)
+    return C, C2
+end
+
+function init_arrays_mpi(params)
+    (; xcs, ycs) = params
+    C  = @. exp(-xcs^2 - (ycs')^2)
     C2 = copy(C)
     return C, C2
 end

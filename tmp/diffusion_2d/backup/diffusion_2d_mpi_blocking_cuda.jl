@@ -100,7 +100,7 @@ end
     bufs   = init_bufs(C)
     t_tic  = 0.0
     # Time loop
-    for it = 1:nt
+    for it in 1:nt
         (it == 11) && (t_tic = Base.time()) # time after warmup
         @cuda threads = nthreads blocks = nblocks diffusion_step!(C2, C, D, dt, dx, dy)
         update_halo!(C2, bufs, neighbors, comm_cart)

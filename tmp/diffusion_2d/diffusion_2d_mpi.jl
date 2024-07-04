@@ -53,8 +53,8 @@ macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) / dy)) end
 
 function diffusion_step!(C2, C, D, dt, dx, dy)
     # respect column major order
-    for iy ∈ 1:size(C, 2)-2
-        for ix ∈ 1:size(C, 1)-2
+    for iy in 1:size(C, 2)-2
+        for ix in 1:size(C, 1)-2
             @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix+1, iy+1) - @qx(ix, iy+1)) / dx +
                                                              (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / dy)
         end
@@ -96,7 +96,7 @@ end
     bufs   = init_bufs(C)
     t_tic  = 0.0
     # Time loop
-    for it = 1:nt
+    for it in 1:nt
         (it == 11) && (t_tic = Base.time()) # time after warmup
         diffusion_step!(C2, C, D, dt, dx, dy)
         update_halo!(C2, bufs, neighbors, comm_cart)

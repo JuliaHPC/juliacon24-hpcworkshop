@@ -40,15 +40,15 @@ end
 function diffusion_step!(params, C2, C)
     (; ds, dt, D, static) = params
     if static
-        Threads.@threads :static for iy ∈ 1:size(C, 2)-2
-            for ix ∈ 1:size(C, 1)-2
+        Threads.@threads :static for iy in 1:size(C, 2)-2
+            for ix in 1:size(C, 1)-2
                 @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix+1, iy+1) - @qx(ix, iy+1)) / ds +
                                                                 (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / ds)
             end
         end
     else
-        Threads.@threads :dynamic for iy ∈ 1:size(C, 2)-2
-            for ix ∈ 1:size(C, 1)-2
+        Threads.@threads :dynamic for iy in 1:size(C, 2)-2
+            for ix in 1:size(C, 1)-2
                 @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix+1, iy+1) - @qx(ix, iy+1)) / ds +
                                                                 (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / ds)
             end
