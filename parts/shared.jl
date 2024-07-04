@@ -19,6 +19,13 @@ function init_arrays_with_flux(params)
     return C, qx, qy
 end
 
+function init_arrays(params)
+    (; cs) = params
+    C  = @. exp(-cs^2 - (cs')^2)
+    C2 = copy(C)
+    return C, C2
+end
+
 
 ## CONVENIENCE MACROS
 # to avoid writing nested finite-difference expression

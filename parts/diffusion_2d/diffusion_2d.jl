@@ -1,7 +1,7 @@
 # 2D linear diffusion solver - serial, vectorized
 using Printf
 using CairoMakie
-include("shared.jl")
+include(joinpath(@__DIR__, "../shared.jl"))
 
 function compute_flux!(params, qx, qy, C)
     (; D, ds) = params
@@ -21,7 +21,7 @@ function run_diffusion(; ns=64, nt=100, do_visualize=false)
     C, qx, qy = init_arrays_with_flux(params)
     fig, plt  = maybe_init_visualization(params, C)
     t_tic = 0.0
-    # Time loop
+    # time loop
     for it in 1:nt
         # time after warmup (ignore first 10 iterations)
         (it == 11) && (t_tic = Base.time())
@@ -33,7 +33,7 @@ function run_diffusion(; ns=64, nt=100, do_visualize=false)
     end
     t_toc = (Base.time() - t_tic)
     print_perf(params, t_toc)
-    return
+    return nothing
 end
 
 # Running things...

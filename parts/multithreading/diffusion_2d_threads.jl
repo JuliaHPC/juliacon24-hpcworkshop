@@ -2,7 +2,7 @@
 using ThreadPinning
 using Printf
 using CairoMakie
-include("shared.jl")
+include(joinpath(@__DIR__, "../shared.jl"))
 
 function init_arrays_threads(params)
     (; ns, cs, parallel_init, static) = params
@@ -59,8 +59,8 @@ end
 
 
 function run_diffusion(; ns=64, nt=100, do_visualize=false, parallel_init=false, static=false)
-    params = init_params(; ns, nt, do_visualize, parallel_init, static)
-    C, C2 = init_arrays_threads(params)
+    params   = init_params(; ns, nt, do_visualize, parallel_init, static)
+    C, C2    = init_arrays_threads(params)
     fig, plt = maybe_init_visualization(params, C)
     t_tic = 0.0
     # time loop
@@ -88,5 +88,5 @@ end
 if do_run
     # pinthreads(:numa)
     # run_diffusion(; ns=256, do_visualize)
-    run_diffusion(; ns=4096, nt=400, do_visualize)
+    run_diffusion(; ns=6144, nt=200, do_visualize)
 end
