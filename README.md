@@ -31,8 +31,17 @@ Ideally, you already do the following things before the workshop (but there will
          git clone https://github.com/JuliaHPC/juliacon24-hpcworkshop $SCRATCH/juliacon24-hpcworkshop
     
     * You will work in this folder during the workshop.
-    * **Note:** You will have to run `git pull` on workshop day to get the latest version.
   * To prepare your `$HOME/.bashrc`, run the following command
 
-         echo -e "export JULIA_DEPOT_PATH=\$SCRATCH/.julia\nexport PATH=\$SCRATCH/.julia/bin:\$PATH" >> $HOME/.bashrc
+         echo -e "export JULIA_DEPOT_PATH=\$SCRATCH/.julia\nexport PATH=\$SCRATCH/.julia/bin:\$PATH\n# auto-load the Julia module\nml use /global/common/software/nersc/n9/julia/modules\nml julia" >> $HOME/.bashrc
+    * Most importantly, this
+      * permanently puts your Julia depot onto the parallel file system (`$SCRATCH`) and
+      * auto-loads the Julia module when you login (such that the `julia` command is available).
+        
+### At the start of the workshop
 
+(The following is supposed to be done **on Perlmutter**.)
+
+* Switch to the workshop repository `cd $SCRATCH/juliacon24-hpcworkshop`.
+* Run `git pull` within  to ensure that you have the latest version of the repository.
+* Instantiate the Julia environment by running `julia --project -e 'import Pkg; Pkg.instantiate()'.
