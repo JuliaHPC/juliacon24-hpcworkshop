@@ -1,0 +1,52 @@
+---- N=6144, nt=200, SERIAL initialization, STATIC scheduling
+
+pinthreads(:cores)
+Time = 4.4596e+00 s, T_eff = 25.70 GB/s 
+
+pinthreads(:sockets)
+Time = 4.1121e+00 s, T_eff = 27.90 GB/s 
+
+pinthreads(:numa)
+Time = 3.1624e+00 s, T_eff = 36.30 GB/s 
+
+
+
+
+---- N=6144, nt=200, PARALLEL initialization, STATIC scheduling
+
+pinthreads(:cores)
+Time = 4.4582e+00 s, T_eff = 25.70 GB/s 
+
+pinthreads(:sockets)
+Time = 2.1078e+00 s, T_eff = 54.40 GB/s 
+
+pinthreads(:numa)
+Time = 1.7461e+00 s, T_eff = 65.70 GB/s 
+
+
+
+
+---- N=6144, nt=200, PARALLEL initialization, STATIC scheduling, WITH flux arrays (i.e. more memory accesses)
+
+pinthreads(:cores)
+Time = 1.4917e+01 s, T_eff = 7.69 GB/s 
+
+pinthreads(:sockets)
+Time = 7.2669e+00 s, T_eff = 15.80 GB/s 
+
+pinthreads(:numa)
+Time = 1.6488e+00 s, T_eff = 69.60 GB/s 
+
+
+
+
+---- N=6144, nt=200, PARALLEL initialization, DYNAMIC scheduling
+
+pinthreads(:cores)
+Time = 4.4644e+00 s, T_eff = 25.70 GB/s 
+
+pinthreads(:sockets)
+Time = 3.4012e+00 s, T_eff = 33.70 GB/s 
+
+pinthreads(:numa)
+Time = 3.3728e+00 s, T_eff = 34.00 GB/s 
