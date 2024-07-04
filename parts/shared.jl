@@ -1,11 +1,11 @@
 ## PARAMETER INITIALIZATION
 function init_params(; ns=64, nt=100, kwargs...)
-    L    = 10.0                 # physical domain length
-    D    = 1.0                  # diffusion coefficient
-    ds   = L / ns               # grid spacing
-    dt   = ds^2 / D / 8.2       # time step
+    L    = 10.0               # physical domain length
+    D    = 1.0                # diffusion coefficient
+    ds   = L / ns             # grid spacing
+    dt   = ds^2 / D / 8.2     # time step
     cs   = range(start=ds / 2, stop=L - ds / 2, length=ns) .- 0.5 * L # vector of coord points
-    nout = floor(Int, nt / 5)   # plotting frequency
+    nout = floor(Int, nt / 5) # plotting frequency
     return (; L, D, ns, nt, ds, dt, cs, nout, kwargs...)
 end
 
@@ -22,6 +22,18 @@ function init_params_mpi(; dims, coords, ns=64, nt=100, kwargs...)
     xcs  = [x0 + ix * dx - dx / 2 - 0.5 * L for ix in 1:ns] # local vector of global coord points
     ycs  = [y0 + iy * dy - dy / 2 - 0.5 * L for iy in 1:ns] # local vector of global coord points
     return (; L, D, ns, nt, dx, dy, dt, xcs, ycs, kwargs...)
+end
+
+function init_params_gpu(; ns=64, nt=100, kwargs...)
+    L    = 10.0                   # physical domain length
+    D    = 1.0                    # diffusion coefficient
+    ds   = L / ns                 # grid spacing
+    dt   = ds^2 / D / 8.2         # time step
+    cs   = range(start=ds / 2, stop=L - ds / 2, length=ns) .- 0.5 * L # vector of coord points
+    nout = floor(Int, nt / 5)     # plotting frequency
+    nthreads = 32, 8              # number of threads per block
+    nblocks  = cld.(ns, nthreads) # number of blocks
+    return (; L, D, ns, nt, ds, dt, cs, nout, nthreads, nblocks, kwargs...)
 end
 
 ## ARRAY INITIALIZATION
@@ -43,6 +55,13 @@ end
 function init_arrays_mpi(params)
     (; xcs, ycs) = params
     C  = @. exp(-xcs^2 - (ycs')^2)
+    C2 = copy(C)
+    return C, C2
+end
+
+function init_arrays_gpu(params)
+    (; cs) = params
+    C  = CuArray(@. exp(-cs^2 - (cs')^2))
     C2 = copy(C)
     return C, C2
 end
