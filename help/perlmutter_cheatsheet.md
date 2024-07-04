@@ -15,7 +15,7 @@ To make the Julia extension work, you have to do a few steps **once**. Please fi
 ssh trainXY@perlmutter.nersc.gov
 ```
 
-To get Julia:
+To get Julia (if not auto-loaded in your `.bashrc`):
 
 ```bash
 ml use /global/common/software/nersc/n9/julia/modules
@@ -34,8 +34,15 @@ https://jupyter.nersc.gov/
 
 ##### CPU
 ```bash
-salloc --nodes 1 --qos interactive --time 02:00:00 --constraint cpu --account=ntrain
+salloc --nodes 1 --qos interactive --time 01:00:00 --constraint cpu --account=ntrain
 ```
+(see the file `cpunode.sh` which you can simply run with `sh cpunode.sh`)
+
+##### GPU
+```bash
+salloc --nodes 1 --qos interactive --time 01:00:00 --constraint gpu --gpus 4 --account=ntrain
+```
+(see the file `gpunode.sh` which you can simply run with `sh gpunode.sh`)
 
 #### Job scripts
 
