@@ -66,7 +66,7 @@ function run_diffusion(; ns=64, nt=100, do_save=false)
     dims      = [0, 0]
     comm      = MPI.COMM_WORLD
     nprocs    = MPI.Comm_size(comm)
-    # arrange MPI ranks in a cartesian grid
+    # arrange MPI ranks in a Cartesian grid
     MPI.Dims_create!(nprocs, dims)
     comm_cart = MPI.Cart_create(comm, dims, [0, 0], 1)
     me        = MPI.Comm_rank(comm_cart)
