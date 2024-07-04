@@ -6,8 +6,8 @@ include(joinpath(@__DIR__, "../shared.jl"))
 
 function init_arrays_threads(params)
     (; ns, cs, parallel_init, static) = params
-    C      = Matrix{Float64}(undef, ns, ns)
-    C2     = Matrix{Float64}(undef, ns, ns)
+    C  = Matrix{Float64}(undef, ns, ns)
+    C2 = Matrix{Float64}(undef, ns, ns)
     if parallel_init
         # parallel initialization
         if static
@@ -43,20 +43,19 @@ function diffusion_step!(params, C2, C)
         Threads.@threads :static for iy in 1:size(C, 2)-2
             for ix in 1:size(C, 1)-2
                 @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix+1, iy+1) - @qx(ix, iy+1)) / ds +
-                                                                (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / ds)
+                                                                 (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / ds)
             end
         end
     else
         Threads.@threads :dynamic for iy in 1:size(C, 2)-2
             for ix in 1:size(C, 1)-2
                 @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix+1, iy+1) - @qx(ix, iy+1)) / ds +
-                                                                (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / ds)
+                                                                 (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / ds)
             end
         end
     end
     return nothing
 end
-
 
 function run_diffusion(; ns=64, nt=100, do_visualize=false, parallel_init=false, static=false)
     params   = init_params(; ns, nt, do_visualize, parallel_init, static)

@@ -3,11 +3,9 @@ using Printf
 using CairoMakie
 include(joinpath(@__DIR__, "../shared.jl"))
 
-
 # convenience macros simply to avoid writing nested finite-difference expression
 macro qx(ix, iy) esc(:(-D * (C[$ix+1, $iy] - C[$ix, $iy]) / ds)) end
 macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) / ds)) end
-
 
 function diffusion_step!(params, C2, C)
     (; ds, dt, D) = params
@@ -20,7 +18,6 @@ function diffusion_step!(params, C2, C)
     end
     return nothing
 end
-
 
 function run_diffusion(; ns=64, nt=100, do_visualize=false)
     params   = init_params(; ns, nt, do_visualize)

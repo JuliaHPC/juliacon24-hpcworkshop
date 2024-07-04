@@ -5,7 +5,6 @@ using JLD2
 using MPI
 include(joinpath(@__DIR__, "../shared.jl"))
 
-
 # convenience macros simply to avoid writing nested finite-difference expression
 macro qx(ix, iy) esc(:(-D * (C[$ix+1, $iy] - C[$ix, $iy]) / dx)) end
 macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) / dy)) end
@@ -20,7 +19,6 @@ function diffusion_step!(params, C2, C)
     end
     return nothing
 end
-
 
 # MPI functions
 @views function update_halo!(A, bufs, neighbors, comm)
@@ -63,8 +61,6 @@ function init_bufs(A)
               recv_2_1=zeros(size(A, 1)), recv_2_2=zeros(size(A, 1)))
 end
 
-
-
 function run_diffusion(; ns=64, nt=100, do_save=false)
     MPI.Init()
     dims      = [0, 0]
@@ -78,10 +74,10 @@ function run_diffusion(; ns=64, nt=100, do_save=false)
     neighbors = (; x=MPI.Cart_shift(comm_cart, 0, 1), y=MPI.Cart_shift(comm_cart, 1, 1))
     (me == 0) && println("nprocs = $(nprocs), dims = $dims")
 
-    params   = init_params_mpi(; dims, coords, ns, nt, do_save)
-    C, C2 = init_arrays_mpi(params)
-    bufs = init_bufs(C)
-    t_tic = 0.0
+    params = init_params_mpi(; dims, coords, ns, nt, do_save)
+    C, C2  = init_arrays_mpi(params)
+    bufs   = init_bufs(C)
+    t_tic  = 0.0
     # time loop
     for it in 1:nt
         # time after warmup (ignore first 10 iterations)
