@@ -4,7 +4,7 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=256
 #SBATCH --constraint=cpu
-#SBATCH --account=nguest
+#SBATCH --account=ntrain
 #SBATCH --output=slurm_bench_mt.out
 
 # Load julia

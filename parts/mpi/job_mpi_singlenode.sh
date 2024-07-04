@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=4
 #SBATCH --constraint=cpu
-#SBATCH --account=nguest
+#SBATCH --account=ntrain
 #SBATCH --output=slurm_mpi_singlenode.out
 
 # Load julia
