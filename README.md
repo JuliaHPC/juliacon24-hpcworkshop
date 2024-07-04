@@ -44,4 +44,4 @@ Ideally, you already do the following things before the workshop (but there will
 
 * Switch to the workshop repository `cd $SCRATCH/juliacon24-hpcworkshop`.
 * Run `git pull` within  to ensure that you have the latest version of the repository.
-* Instantiate the Julia environment by running `julia --project -e 'import Pkg; Pkg.instantiate()'.
+* Instantiate the Julia environment by running `julia --project -e 'import Pkg; Pkg.instantiate()'`.
