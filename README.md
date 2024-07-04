@@ -1,6 +1,12 @@
 # JuliaCon24 Workshop: Hands-on with Julia for HPC on GPUs and CPUs
 
-Details: https://pretalx.com/juliacon2024/talk/NTQZJJ/
+**Instructors:** [Carsten Bauer](https://github.com/carstenbauer), [Ludovic Räss](https://github.com/luraess), and [Johannes Blaschke](https://github.com/JBlaschke) (remotely).
+
+**Where:** TU-Eindhoven 0.244
+
+**When:** July 9th, 1:30 PM (CEST)
+
+**More:** https://pretalx.com/juliacon2024/talk/NTQZJJ/
 
 ## Applying for NERSC Training Account (Urgent!)
 
