@@ -68,5 +68,6 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
 (The following is supposed to be done **on Perlmutter**.)
 
 * Switch to the workshop repository `cd $SCRATCH/juliacon24-hpcworkshop`.
+    * Tip: You can run `code -r .` in a terminal in VS Code to open the current directory in the current VS Code window.
 * Run `git pull` within  to ensure that you have the latest version of the repository.
 * Instantiate the Julia environment by running `julia --project -e 'import Pkg; Pkg.instantiate()'`.
