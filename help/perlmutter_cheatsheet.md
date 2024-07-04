@@ -1,16 +1,6 @@
 ## Perlmutter Cheatsheet
 
-### Login
-
-#### VS Code
-
-1) In VS Code, press `F1` and run the `Remote-SSH: Open SSH Host...` command.
-2) Enter `trainXY@perlmutter.nersc.gov` (with `trainXY` replaced by your training account) and press enter.
-3) In the popup input box, enter your password and press enter.
-
-To make the Julia extension work, you have to do a few steps **once**. Please find them [here](vscode_julia_on_perlmutter.md#making-the-julia-extension-work).
-
-#### Terminal
+#### Login (Terminal)
 ```bash
 ssh trainXY@perlmutter.nersc.gov
 ```
@@ -23,10 +13,6 @@ ml julia
 ```
 
 Afterwards, the `julia` command is available.
-
-#### Jupyter
-
-https://jupyter.nersc.gov/
 
 ### Getting a compute node
 
@@ -61,4 +47,24 @@ ml use /global/common/software/nersc/n9/julia/modules
 ml julia
 
 julia --project --threads 8 whatever.jl
+```
+
+##### MPI
+
+**If you want more than 8 nodes, you need to specify `#SBATCH --qos=regular`.**
+
+```bash
+#!/bin/bash
+#SBATCH --time=00:10:00
+#SBATCH --nodes=9
+#SBATCH --ntasks-per-node=1
+#SBATCH --constraint=cpu
+#SBATCH --account=ntrain
+#SBATCH --qos=regular
+
+# Load julia
+ml use /global/common/software/nersc/n9/julia/modules
+ml julia
+
+mpiexecjl --project -n 9 julia mpicode.jl
 ```
