@@ -1,6 +1,6 @@
 # JuliaCon24 Workshop: Hands-on with Julia for HPC on GPUs and CPUs
 
-**Instructors:** [Carsten Bauer](https://github.com/carstenbauer), [Ludovic Räss](https://github.com/luraess), and [Johannes Blaschke](https://github.com/JBlaschke) (remotely).
+**Instructors:** [Carsten Bauer](https://github.com/carstenbauer), [Ludovic Räss](https://github.com/luraess), and [Johannes Blaschke](https://github.com/JBlaschke) (remote).
 
 **Where:** TU-Eindhoven 0.244
 
