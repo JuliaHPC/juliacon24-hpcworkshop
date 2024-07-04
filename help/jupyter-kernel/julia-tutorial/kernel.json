@@ -1,0 +1,10 @@
+{
+  "display_name": "Julia Tutorial",
+  "argv": [
+    "{resource_dir}/kernel-helper.sh",
+    "{connection_file}"
+  ],
+  "language": "julia",
+  "env": {},
+  "interrupt_mode": "signal"
+}
