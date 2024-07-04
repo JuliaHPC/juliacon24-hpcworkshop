@@ -3,7 +3,7 @@
 #SBATCH --nodes=4
 #SBATCH --ntasks-per-node=1
 #SBATCH --constraint=cpu
-#SBATCH --account=ntrain
+#SBATCH --account=ntrain1
 #SBATCH --output=slurm_mpi_multinode.out
 #SBATCH --qos=regular
 
