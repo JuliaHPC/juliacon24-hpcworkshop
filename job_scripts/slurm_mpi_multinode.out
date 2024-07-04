@@ -1,0 +1,10 @@
+srun: warning: can't run 4 processes on 16 nodes, setting nnodes to 4
+nprocs = 4, dims = [2, 2]
+Time = 2.1239e+01 s, T_eff = 8.10 GB/s 
+srun: warning: can't run 9 processes on 16 nodes, setting nnodes to 9
+nprocs = 9, dims = [3, 3]
+Time = 2.1652e+01 s, T_eff = 7.90 GB/s 
+srun: Job 27596531 step creation temporarily disabled, retrying (Requested nodes are busy)
+srun: Step created for StepId=27596531.2
+nprocs = 16, dims = [4, 4]
+Time = 2.1719e+01 s, T_eff = 7.90 GB/s 
