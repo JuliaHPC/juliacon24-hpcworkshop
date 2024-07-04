@@ -1,13 +1,16 @@
-function init_params(ns=64, nt=100, do_visu=false)
+## PARAMETER INITIALIZATION
+function init_params(; ns=64, nt=100, kwargs...)
     L  = 10.0                 # physical domain length
     D  = 1.0                  # diffusion coefficient
     ds = L / ns               # grid spacing
     dt = ds^2 / D / 4.1       # time step
     cs = range(start=ds / 2, stop=L - ds / 2, length=ns) .- 0.5 * L # vector of coord points
     nout = floor(Int, nt / 5) # plotting frequency
-    return (; L, D, ns, nt, ds, dt, cs, nout, do_visu)
+    return (; L, D, ns, nt, ds, dt, cs, nout, kwargs...)
 end
 
+
+## ARRAY INITIALIZATION
 function init_arrays_with_flux(params)
     (; cs, ns) = params
     C  = @. exp(-cs^2 - (cs')^2)
@@ -16,8 +19,16 @@ function init_arrays_with_flux(params)
     return C, qx, qy
 end
 
-function maybe_init_visu(params, C)
-    if params.do_visu
+
+## CONVENIENCE MACROS
+# to avoid writing nested finite-difference expression
+macro qx(ix, iy) esc(:(-D * (C[$ix+1, $iy] - C[$ix, $iy]) / ds)) end
+macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) / ds)) end
+
+
+## VISUALIZATION & PRINTING
+function maybe_init_visualization(params, C)
+    if params.do_visualize
         fig = Figure(; size=(500, 400), fontsize=14)
         ax  = Axis(fig[1, 1][1, 1]; aspect=DataAspect(), title="C")
         plt = heatmap!(ax, params.cs, params.cs, Array(C); colormap=:turbo, colorrange=(0, 1))
@@ -28,8 +39,8 @@ function maybe_init_visu(params, C)
     return nothing, nothing
 end
 
-function maybe_update_visu(params, fig, plt, C, it)
-    if params.do_visu && (it % params.nout == 0)
+function maybe_update_visualization(params, fig, plt, C, it)
+    if params.do_visualize && (it % params.nout == 0)
         plt[3] = Array(C)
         display(fig)
     end
