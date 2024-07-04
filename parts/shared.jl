@@ -12,7 +12,8 @@ end
 function init_params_mpi(; dims, coords, ns=64, nt=100, kwargs...)
     L    = 10.0                    # physical domain length
     D    = 1.0                     # diffusion coefficient
-    nx_g, ny_g = dims[1] * (ns - 2) + 2, dims[2] * (ns - 2) + 2  # global number of grid points
+    nx_g = dims[1] * (ns - 2) + 2  # global number of grid points along dim 1
+    ny_g = dims[2] * (ns - 2) + 2  # global number of grid points along dim 2
     dx   = L / nx_g                # grid spacing
     dy   = L / ny_g                # grid spacing
     dt   = min(dx, dy)^2 / D / 8.2 # time step

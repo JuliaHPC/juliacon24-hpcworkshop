@@ -10,4 +10,4 @@
 ml use /global/common/software/nersc/n9/julia/modules
 ml julia
 
-mpiexecjl --project -n 4 julia diffusion_2d_mpi.jl
+mpiexecjl --project -n 4 julia --threads 1 diffusion_2d_mpi.jl

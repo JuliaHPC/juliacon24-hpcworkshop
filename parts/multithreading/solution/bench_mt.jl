@@ -6,11 +6,11 @@ if Threads.nthreads() != 8
     @warn("This script is supposed to be run with 8 Julia threads.")
 end
 
+do_visualize = false
+do_run = false
 codefile = joinpath(@__DIR__, "../diffusion_2d_threads.jl")
 include(codefile)
 
-do_visualize = false
-do_run = false
 ns  = 6144 # finer grid → more memory accesses
 nt  = 200  # shorter time integration (otherwise we'd have to wait too long 😉)
 
