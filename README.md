@@ -22,21 +22,40 @@ If you are facing any issues, please reach out to Carsten Bauer (crstnbr@gmail.c
 
 ## Prepare for the workshop
 
-Ideally, you already do the following things before the workshop (but there will also be time to do them in Eindhoven):
-* Make sure that you have [VS Code](https://code.visualstudio.com/download) installed on your laptop.
-* Follow the [VS Code and Julia on Perlmutter](help/vscode_julia_on_perlmutter.md) instructions to run Julia within VS Code remotely on a Perlmutter login node.
-* **On Perlmutter** (e.g. in a VS Code terminal on Perlmutter):
-  * Clone the workshop materials into `$SCRATCH/juliacon24-hpcworkshop`by running the following command.
+Ideally, you already do the following things before the workshop (but there will also be time to do them in Eindhoven).
 
-         git clone https://github.com/JuliaHPC/juliacon24-hpcworkshop $SCRATCH/juliacon24-hpcworkshop
-    
-    * You will work in this folder during the workshop.
-  * To prepare your `$HOME/.bashrc`, run the following command
+To begin with, make sure that you have [VS Code](https://code.visualstudio.com/download) installed on your laptop.
 
-         echo -e "export JULIA_DEPOT_PATH=\$SCRATCH/.julia\nexport PATH=\$SCRATCH/.julia/bin:\$PATH\n# auto-load the Julia module\nml use /global/common/software/nersc/n9/julia/modules\nml julia" >> $HOME/.bashrc
-    * Most importantly, this
-      * permanently puts your Julia depot onto the parallel file system (`$SCRATCH`) and
-      * auto-loads the Julia module when you login (such that the `julia` command is available).
+### VS Code → Perlmutter (via SSH)
+
+1) In VS Code, press `F1` and run the `Remote-SSH: Open SSH Host...` command.
+   - If the command isn't available, make sure that [Remote - SSH extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) is installed (but it should be available out of the box).
+2) Enter `trainXY@perlmutter.nersc.gov` (with `trainXY` replaced by your training account) and press enter.
+3) In the popup input box, enter your password and press enter.
+
+After a second or two, you should have VS Code running on a Perlmutter login node! 🎉 
+
+
+### On Perlmutter
+* Clone the workshop materials into `$SCRATCH/juliacon24-hpcworkshop`by running the following command.
+
+       git clone https://github.com/JuliaHPC/juliacon24-hpcworkshop $SCRATCH/juliacon24-hpcworkshop
+  
+  * You will work in this folder during the workshop.
+* To prepare your `$HOME/.bashrc`, run the following command(s)
+
+       echo -e "export JULIA_DEPOT_PATH=\$SCRATCH/.julia\nexport PATH=\$SCRATCH/.julia/bin:\$PATH\n# auto-load the Julia module\nml use /global/common/software/nersc/n9/julia/modules\nml julia" >> $HOME/.bashrc
+       . $HOME/.bashrc
+  * Most importantly, this
+    * permanently puts your Julia depot onto the parallel file system (`$SCRATCH`) and
+    * auto-loads the Julia module when you login (such that the `julia` command is available).
+     
+* Let's now turn to the Julia VS Code extension.
+
+  1) Install the [Julia VS Code extension](https://marketplace.visualstudio.com/items?itemName=julialang.language-julia) inside of **VS Code running on Perlmutter**. To do so, open the extensions view (`CTRL/CMD + SHIFT + X`), search for `julia`, and click on install.
+  2) Open the VS Code Settings and search for `Julia executable`. Insert `$SCRATCH/julia_wrapper.sh` into the text field under `Julia: Executable Path`.
+  
+  If `ALT/OPTION + J` followed by `ALT/OPTION + O` (**or** pressing `F1` and executing the `Julia: Start REPL` command) successfully spins up the integrated Julia REPL, you know that the setup is working! 🎉
         
 ### At the start of the workshop
 
