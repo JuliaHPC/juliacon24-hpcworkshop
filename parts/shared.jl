@@ -36,6 +36,23 @@ function init_params_gpu(; ns=64, nt=100, kwargs...)
     return (; L, D, ns, nt, ds, dt, cs, nout, nthreads, nblocks, kwargs...)
 end
 
+function init_params_gpu_mpi(; dims, coords, ns=64, nt=100, kwargs...)
+    L    = 10.0                      # physical domain length
+    D    = 1.0                       # diffusion coefficient
+    nx_g = dims[1] * (ns - 2) + 2    # global number of grid points along dim 1
+    ny_g = dims[2] * (ns - 2) + 2    # global number of grid points along dim 2
+    dx   = L / nx_g                  # grid spacing
+    dy   = L / ny_g                  # grid spacing
+    dt   = min(dx, dy)^2 / D / 8.2   # time step
+    x0   = coords[1] * (ns - 2) * dx # coords shift to get global coords on  local process
+    y0   = coords[2] * (ns - 2) * dy # coords shift to get global coords on  local process
+    xcs  = [x0 + ix * dx - dx / 2 - 0.5 * L for ix in 1:ns] # local vector of global coord points
+    ycs  = [y0 + iy * dy - dy / 2 - 0.5 * L for iy in 1:ns] # local vector of global coord points
+    nthreads = 32, 8                 # number of threads per block
+    nblocks  = cld.(ns, nthreads)    # number of blocks
+    return (; L, D, ns, nt, dx, dy, dt, xcs, ycs, nthreads, nblocks, kwargs...)
+end
+
 ## ARRAY INITIALIZATION
 function init_arrays_with_flux(params)
     (; cs, ns) = params
@@ -62,6 +79,13 @@ end
 function init_arrays_gpu(params)
     (; cs) = params
     C  = CuArray(@. exp(-cs^2 - (cs')^2))
+    C2 = copy(C)
+    return C, C2
+end
+
+function init_arrays_gpu_mpi(params)
+    (; xcs, ycs) = params
+    C  = CuArray(@. exp(-xcs^2 - (ycs')^2))
     C2 = copy(C)
     return C, C2
 end

@@ -1,21 +1,28 @@
-# 2D linear diffusion solver - MPI
+# 2D linear diffusion solver - GPU MPI
 using Printf
 using JLD2
+using CUDA
 using MPI
 include(joinpath(@__DIR__, "../shared.jl"))
 
 # convenience macros simply to avoid writing nested finite-difference expression
-macro qx(ix, iy) esc(:(-D * (C[$ix+1, $iy] - C[$ix, $iy]) / dx)) end
-macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) / dy)) end
+macro qx(ix, iy) esc(:(-D * (C[$ix+1, $iy] - C[$ix, $iy]) * inv(ds))) end
+macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) * inv(ds))) end
+
+function diffusion_step_kernel!(params, C2, C)
+    (; ds, dt, D) = params
+    ix = (blockIdx().x - 1) * blockDim().x + threadIdx().x # CUDA vectorised unique index
+    iy = (blockIdx().y - 1) * blockDim().y + threadIdx().y # CUDA vectorised unique index
+    if ix <= size(C, 1)-2 && iy <= size(C, 2)-2
+        @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix + 1, iy + 1) - @qx(ix, iy + 1)) * inv(ds) +
+                                                         (@qy(ix + 1, iy + 1) - @qy(ix + 1, iy)) * inv(ds))
+    end
+    return nothing
+end
 
 function diffusion_step!(params, C2, C)
-    (; dx, dy, dt, D) = params
-    for iy in 1:size(C, 2)-2
-        for ix in 1:size(C, 1)-2
-            @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix+1, iy+1) - @qx(ix, iy+1)) / dx +
-                                                             (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / dy)
-        end
-    end
+    (; nthreads, nblocks) = params
+    @cuda threads = nthreads blocks = nblocks diffusion_step_kernel!(params, C2, C)
     return nothing
 end
 
@@ -54,10 +61,10 @@ end
 end
 
 function init_bufs(A)
-    return (; send_1_1=zeros(size(A, 2)), send_1_2=zeros(size(A, 2)),
-              send_2_1=zeros(size(A, 1)), send_2_2=zeros(size(A, 1)),
-              recv_1_1=zeros(size(A, 2)), recv_1_2=zeros(size(A, 2)),
-              recv_2_1=zeros(size(A, 1)), recv_2_2=zeros(size(A, 1)))
+    return (; send_1_1=CUDA.zeros(Float64, size(A, 2)), send_1_2=CUDA.zeros(Float64, size(A, 2)),
+              send_2_1=CUDA.zeros(Float64, size(A, 1)), send_2_2=CUDA.zeros(Float64, size(A, 1)),
+              recv_1_1=CUDA.zeros(Float64, size(A, 2)), recv_1_2=CUDA.zeros(Float64, size(A, 2)),
+              recv_2_1=CUDA.zeros(Float64, size(A, 1)), recv_2_2=CUDA.zeros(Float64, size(A, 1)))
 end
 
 function run_diffusion(; ns=64, nt=100, do_save=false)
@@ -71,13 +78,19 @@ function run_diffusion(; ns=64, nt=100, do_save=false)
     me        = MPI.Comm_rank(comm_cart)
     coords    = MPI.Cart_coords(comm_cart)
     neighbors = (; x=MPI.Cart_shift(comm_cart, 0, 1), y=MPI.Cart_shift(comm_cart, 1, 1))
+    # select GPU on multi-GPU system based on shared memory topology
+    comm_l    = MPI.Comm_split_type(comm, MPI.COMM_TYPE_SHARED, me)
+    me_l      = MPI.Comm_rank(comm_l)
+     # set GPU
+    gpu_id    = CUDA.device!(me_l)
+    println("$(gpu_id)")
     (me == 0) && println("nprocs = $(nprocs), dims = $dims")
 
-    params = init_params_mpi(; dims, coords, ns, nt, do_save)
-    C, C2  = init_arrays_mpi(params)
+    params = init_params_gpu_mpi(; dims, coords, ns, nt, do_save)
+    C, C2  = init_arrays_gpu_mpi(params)
     bufs   = init_bufs(C)
     t_tic  = 0.0
-    # time loop
+    # Time loop
     for it in 1:nt
         # time after warmup (ignore first 10 iterations)
         (it == 11) && (t_tic = Base.time())
@@ -86,6 +99,8 @@ function run_diffusion(; ns=64, nt=100, do_save=false)
         update_halo!(C2, bufs, neighbors, comm_cart)
         C, C2 = C2, C # pointer swap
     end
+    # synchronize the gpu before querying the final time
+    CUDA.synchronize()
     t_toc = (Base.time() - t_tic)
     # "master" prints performance
     (me == 0) && print_perf(params, t_toc)
@@ -94,7 +109,7 @@ function run_diffusion(; ns=64, nt=100, do_save=false)
         jldsave(joinpath(@__DIR__, "out_$(me).jld2"); C = Array(C[2:end-1, 2:end-1]), lxy = (; lx=params.L, ly=params.L))
     end
     MPI.Finalize()
-    return nothing
+    return
 end
 
 # Running things...
