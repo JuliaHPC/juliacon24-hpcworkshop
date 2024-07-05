@@ -37,6 +37,10 @@ function init_arrays_threads(params)
     return C, C2
 end
 
+# to avoid writing nested finite-difference expression
+macro qx(ix, iy) esc(:(-D * (C[$ix+1, $iy] - C[$ix, $iy]) / ds)) end
+macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) / ds)) end
+
 function diffusion_step!(params, C2, C)
     (; ds, dt, D, static) = params
     if static

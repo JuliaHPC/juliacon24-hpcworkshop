@@ -90,11 +90,6 @@ function init_arrays_gpu_mpi(params)
     return C, C2
 end
 
-## CONVENIENCE MACROS
-# to avoid writing nested finite-difference expression
-macro qx(ix, iy) esc(:(-D * (C[$ix+1, $iy] - C[$ix, $iy]) / ds)) end
-macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) / ds)) end
-
 ## VISUALIZATION & PRINTING
 function maybe_init_visualization(params, C)
     if params.do_visualize
