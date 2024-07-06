@@ -63,10 +63,16 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
      
 * Let's now turn to the Julia VS Code extension.
 
-  1) Install the [Julia VS Code extension](https://marketplace.visualstudio.com/items?itemName=julialang.language-julia) inside of **VS Code running on Perlmutter**. To do so, open the extensions view (`CTRL/CMD + SHIFT + X`), search for `julia`, and click on install.
-  2) Open the VS Code Settings, click on the tab `Remote [SSH: perlmutter.nersc.gov]`, and search for `Julia executable`. Insert `/pscratch/sd/t/trainXY/juliacon24-hpcworkshop/julia_wrapper.sh` - with `trainXY` replaced by you training account name - into the text field under `Julia: Executable Path`.
-  
-  If `ALT/OPTION + J` followed by `ALT/OPTION + O` (**or** pressing `F1` and executing the `Julia: Start REPL` command) successfully spins up the integrated Julia REPL, you know that the setup is working! 🎉
+  1) Installing the extension
+      - Open the extensions view (press `CTRL/CMD + SHIFT + X`).
+      - Search for `julia`.
+      - Click on `install`.
+  2) Pointing it to `julia_wrapper.sh`
+      - Open the VS Code Settings (press `CTRL/CMD + ,`).
+      - Click on the tab `Remote [SSH: perlmutter.nersc.gov]`.
+      - Search for `Julia executable`.
+      - Insert `/pscratch/sd/t/trainXY/juliacon24-hpcworkshop/julia_wrapper.sh` - with `trainXY` replaced by you training account name - into the text field under `Julia: Executable Path`.
+   3) If `ALT/OPTION + J` followed by `ALT/OPTION + O` (**or** pressing `F1` and executing the `Julia: Start REPL` command) successfully spins up the integrated Julia REPL, you know that the setup is working! 🎉
         
 **If you have already done the steps above before the workshop (if not, skip this):**
 
