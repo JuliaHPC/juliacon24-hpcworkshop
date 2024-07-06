@@ -1,0 +1,87 @@
+
+
+#### Run 512
+-- single threaded
+Time = 4.6068e-02 s, T_eff = 8.19 GB/s 
+
+-- ns=512, nt=100, SERIAL initialization, STATIC scheduling
+pinthreads(cores)
+Time = 6.8419e-03 s, T_eff = 55.17 GB/s 
+pinthreads(sockets)
+Time = 6.9280e-03 s, T_eff = 54.49 GB/s 
+pinthreads(numa)
+Time = 7.0949e-03 s, T_eff = 53.21 GB/s 
+
+-- ns=512, nt=100, PARALLEL initialization, STATIC scheduling
+pinthreads(cores)
+Time = 6.8409e-03 s, T_eff = 55.18 GB/s 
+pinthreads(sockets)
+Time = 6.7821e-03 s, T_eff = 55.66 GB/s 
+pinthreads(numa)
+Time = 7.6101e-03 s, T_eff = 49.60 GB/s 
+
+-- ns=512, nt=100, PARALLEL initialization, DYNAMIC scheduling
+pinthreads(cores)
+Time = 6.6450e-03 s, T_eff = 56.81 GB/s 
+pinthreads(sockets)
+Time = 1.1217e-02 s, T_eff = 33.65 GB/s 
+pinthreads(numa)
+Time = 9.5861e-03 s, T_eff = 39.38 GB/s 
+
+
+#### Run 2048
+-- single threaded
+Time = 7.3495e-01 s, T_eff = 8.22 GB/s 
+
+-- ns=2048, nt=100, SERIAL initialization, STATIC scheduling
+pinthreads(cores)
+Time = 1.4753e-01 s, T_eff = 40.94 GB/s 
+pinthreads(sockets)
+Time = 9.4935e-02 s, T_eff = 63.62 GB/s 
+pinthreads(numa)
+Time = 9.5550e-02 s, T_eff = 63.21 GB/s 
+
+-- ns=2048, nt=100, PARALLEL initialization, STATIC scheduling
+pinthreads(cores)
+Time = 1.7262e-01 s, T_eff = 34.99 GB/s 
+pinthreads(sockets)
+Time = 1.0453e-01 s, T_eff = 57.78 GB/s 
+pinthreads(numa)
+Time = 1.0394e-01 s, T_eff = 58.11 GB/s 
+
+-- ns=2048, nt=100, PARALLEL initialization, DYNAMIC scheduling
+pinthreads(cores)
+Time = 1.4637e-01 s, T_eff = 41.26 GB/s 
+pinthreads(sockets)
+Time = 2.4384e-01 s, T_eff = 24.77 GB/s 
+pinthreads(numa)
+Time = 1.2115e-01 s, T_eff = 49.85 GB/s 
+
+
+#### Run 6144
+-- single threaded
+Time = 6.5916e+00 s, T_eff = 8.25 GB/s 
+
+-- ns=6144, nt=100, SERIAL initialization, STATIC scheduling
+pinthreads(cores)
+Time = 2.1146e+00 s, T_eff = 25.71 GB/s 
+pinthreads(sockets)
+Time = 1.9464e+00 s, T_eff = 27.93 GB/s 
+pinthreads(numa)
+Time = 1.5678e+00 s, T_eff = 34.67 GB/s 
+
+-- ns=6144, nt=100, PARALLEL initialization, STATIC scheduling
+pinthreads(cores)
+Time = 2.1160e+00 s, T_eff = 25.69 GB/s 
+pinthreads(sockets)
+Time = 9.7413e-01 s, T_eff = 55.80 GB/s 
+pinthreads(numa)
+Time = 8.2886e-01 s, T_eff = 65.58 GB/s 
+
+-- ns=6144, nt=100, PARALLEL initialization, DYNAMIC scheduling
+pinthreads(cores)
+Time = 2.1081e+00 s, T_eff = 25.79 GB/s 
+pinthreads(sockets)
+Time = 1.5051e+00 s, T_eff = 36.11 GB/s 
+pinthreads(numa)
+Time = 1.6027e+00 s, T_eff = 33.92 GB/s 

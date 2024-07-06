@@ -2,27 +2,30 @@
 using ThreadPinning
 using Printf
 using CairoMakie
-include(joinpath(@__DIR__, "../shared.jl"))
+include(joinpath(@__DIR__, "../../shared.jl"))
 
 function init_arrays_threads(params)
     (; ns, cs, parallel_init, static) = params
     C  = Matrix{Float64}(undef, ns, ns)
     C2 = Matrix{Float64}(undef, ns, ns)
-    #
-    # !! TODO !!
-    #
-    # Below, you see how the arrays C and C2 are initialized without multithreading.
-    # Based off of this serial implementation implement two multithreaded variants
-    # that use static or dynamic scheduling, respectively (see "TODO..." below).
-    #
     if parallel_init
         # parallel initialization
         if static
             # static scheduling
-            # TODO...
+            Threads.@threads :static for iy in axes(C, 2)
+                for ix in axes(C, 1)
+                    C[ix, iy]  = exp(- cs[ix]^2 - cs[iy]^2)
+                    C2[ix, iy] = C[ix, iy] # element-wise copy
+                end
+            end
         else
             # dynamic scheduling
-            # TODO...
+            Threads.@threads :dynamic for iy in axes(C, 2)
+                for ix in axes(C, 1)
+                    C[ix, iy]  = exp(- cs[ix]^2 - cs[iy]^2)
+                    C2[ix, iy] = C[ix, iy] # element-wise copy
+                end
+            end
         end
     else
         # serial initialization
@@ -42,20 +45,22 @@ macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) / ds)) end
 
 function diffusion_step!(params, C2, C)
     (; ds, dt, D, static) = params
-    #
-    # !! TODO !!
-    #
-    # Similar to the initialization above, we want to multithread the
-    # diffusion step (computational kernel). Based off of the serial kernel
-    # (see README.md or diffusion_2d_loop.jl) implement two multithreaded variants
-    # that use static or dynamic scheduling, respectively (see "TODO..." below).
-    #
     if static
         # static scheduling
-        # TODO...
+        Threads.@threads :static for iy in 1:size(C, 2)-2
+            for ix in 1:size(C, 1)-2
+                @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix+1, iy+1) - @qx(ix, iy+1)) / ds +
+                                                                 (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / ds)
+            end
+        end
     else
         # dynamic scheduling
-        # TODO...
+        Threads.@threads :dynamic for iy in 1:size(C, 2)-2
+            for ix in 1:size(C, 1)-2
+                @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix+1, iy+1) - @qx(ix, iy+1)) / ds +
+                                                                 (@qy(ix+1, iy+1) - @qy(ix+1, iy)) / ds)
+            end
+        end
     end
     return nothing
 end
@@ -88,6 +93,9 @@ end
 (!@isdefined do_run) && (do_run = true)
 
 if do_run
-    run_diffusion(; ns=256, do_visualize)
-    # run_diffusion(; ns=6144, nt=200, do_visualize)
+    if !isempty(ARGS)
+        run_diffusion(; ns=parse(Int, ARGS[1]), do_visualize)
+    else
+        run_diffusion(; ns=256, do_visualize)
+    end
 end
