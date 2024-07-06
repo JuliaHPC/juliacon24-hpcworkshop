@@ -48,13 +48,18 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
        git clone https://github.com/JuliaHPC/juliacon24-hpcworkshop $SCRATCH/juliacon24-hpcworkshop
   
   * You will work in this folder during the workshop.
-* To prepare your `$HOME/.bashrc`, run the following command(s)
+* Change into the workshop repository that you've just cloned (`cd $SCRATCH/juliacon24-hpcworkshop`) and run the following command(s).
 
-       echo -e "export JULIA_DEPOT_PATH=\$SCRATCH/.julia\nexport PATH=\$SCRATCH/.julia/bin:\$PATH\n# auto-load the Julia module\nml use /global/common/software/nersc/n9/julia/modules\nml julia" >> $HOME/.bashrc
-       . $HOME/.bashrc
-  * Most importantly, this
-    * permanently puts your Julia depot onto the parallel file system (`$SCRATCH`) and
-    * auto-loads the Julia module when you login (such that the `julia` command is available).
+      ./setup.sh
+      . $HOME/.bashrc
+  
+  * The setup script
+    * instantiates the Julia environment
+    * installs MPI.jl's `mpiexecjl` wrapper
+    * modifies your `$HOME/.bashrc` to
+      * permanently put your Julia depot onto the parallel file system (`$SCRATCH/.julia`)
+      * auto-load the Julia module when you login (such that the `julia` command is available)
+      * make `mpiexecjl` available (i.e. modify `$PATH`)
      
 * Let's now turn to the Julia VS Code extension.
 
@@ -63,11 +68,10 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
   
   If `ALT/OPTION + J` followed by `ALT/OPTION + O` (**or** pressing `F1` and executing the `Julia: Start REPL` command) successfully spins up the integrated Julia REPL, you know that the setup is working! 🎉
         
-### At the start of the workshop
+**If you have already done the steps above before the workshop (if not, skip this):**
 
-(The following is supposed to be done **on Perlmutter**.)
+You should make sure that you have the latest version of the materials on workshop day. To that end, perform the following steps **on Perlmutter** at the beginning of the workshop:
 
 * Switch to the workshop repository `cd $SCRATCH/juliacon24-hpcworkshop`.
-    * Tip: You can run `code -r .` in a terminal in VS Code to open the current directory in the current VS Code window.
-* Run `git pull` within  to ensure that you have the latest version of the repository.
-* Instantiate the Julia environment by running `julia --project -e 'import Pkg; Pkg.instantiate()'`.
+* Run `git pull`.
+* Rerun the setup script: `./setup.sh`.
