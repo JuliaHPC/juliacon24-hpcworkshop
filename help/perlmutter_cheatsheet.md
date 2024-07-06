@@ -1,38 +1,36 @@
-## Perlmutter Cheatsheet
+# Perlmutter Cheatsheet
 
-#### Login (Terminal)
-```bash
-ssh trainXY@perlmutter.nersc.gov
-```
+## Managing jobs
 
-To get Julia (if not auto-loaded in your `.bashrc`):
+### Submitting a job
+`sbatch job_script.sh`
 
-```bash
-ml use /global/common/software/nersc/n9/julia/modules
-ml julia
-```
+### List your submitted jobs
+`squeue -u trainXY`, where `trainXY` is your account name.
 
-Afterwards, the `julia` command is available.
+Tip: `watch -n 1 'squeue -u trainXY'`
 
-### Getting a compute node
+### Canceling a job
 
-#### Interactive
+`scancel <jobid>` where `<jobid>` is the id of the job (can be found with `squeue`, see above).
 
-##### CPU
+## Interactive sessions on compute nodes
+
+### CPU
 ```bash
 salloc --nodes 1 --qos interactive --time 01:00:00 --constraint cpu --account=ntrain1
 ```
 (see the file `cpunode.sh` which you can simply run with `sh cpunode.sh`)
 
-##### GPU
+### GPU
 ```bash
 salloc --nodes 1 --qos interactive --time 01:00:00 --constraint gpu --gpus 4 --account=ntrain1
 ```
 (see the file `gpunode.sh` which you can simply run with `sh gpunode.sh`)
 
-#### Job scripts
+## Examplatory job scripts
 
-##### CPU (full node)
+### CPU (full node)
 ```bash
 #!/bin/bash
 #SBATCH --time=00:05:00
@@ -49,9 +47,10 @@ ml julia
 julia --project --threads 8 whatever.jl
 ```
 
-##### MPI
+### MPI
 
-**If you want more than 8 nodes, you need to specify `#SBATCH --qos=regular`.**
+* "tasks" in SLURM correspond to MPI ranks
+* **If you want more than 8 nodes, you need to specify `#SBATCH --qos=regular`.**
 
 ```bash
 #!/bin/bash
