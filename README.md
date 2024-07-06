@@ -28,7 +28,7 @@ If you are facing any issues, please reach out to Carsten Bauer (crstnbr@gmail.c
 
 ## Prepare for the workshop
 
-Ideally, you already do the following things before the workshop (but there will also be time to do them in Eindhoven).
+You can already do the following steps before the workshop (but there will also be time to do them in Eindhoven).
 
 To begin with, make sure that you have [VS Code](https://code.visualstudio.com/download) installed on your laptop.
 
