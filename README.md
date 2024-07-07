@@ -8,6 +8,24 @@
 
 **More:** https://pretalx.com/juliacon2024/talk/NTQZJJ/
 
+## Schedule
+
+* **Onboarding**
+  * [Introduction](onboarding/intro.pdf)
+  * [NERSC overview](#)
+  * [Julia + VS Code on Perlmutter](onboarding/julia_on_clusters.pdf)
+
+* **Introducing the example**
+  * [2D linear diffusion solver](parts/diffusion_2d)
+
+* **Parallelization on Perlmutter**
+  * [Multithreading](parts/multithreading)
+    
+    (short break)
+  * [Distributed computing](parts/mpi)
+  * [GPU acceleration](parts/gpu)
+
+
 ## Applying for NERSC Training Account (Urgent!)
 
 To get the most out of the workshop, you need to apply for a NERSC training account **before the workshop (as early as possible)**! The reason for this is that everyone who applies for an account has to be checked, which can take some time (between a few minutes and a week) depending on their personal background (e.g. nationality and affiliation).
