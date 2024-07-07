@@ -70,15 +70,20 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
 
        cd $SCRATCH/juliacon24-hpcworkshop
        ./setup.sh
-  
-  * The setup script
-    * modifies your `$HOME/.bashrc` to
-      * permanently put your Julia depot onto the parallel file system (`$SCRATCH/.julia`)
-      * auto-load the Julia module when you login (such that the `julia` command is available)
-      * make `mpiexecjl` available (i.e. modify `$PATH`)
-    * instantiates the Julia environment
-    * installs MPI.jl's `mpiexecjl` wrapper
-    * installs a Jupyter kernel (for NERSC's Jupyter hub)
+
+    <details>
+     <summary>What does this do? (click me if you're curious)</summary>
+     
+    * The setup script
+        * modifies your `$HOME/.bashrc` to
+            * permanently put your Julia depot onto the parallel file system (`$SCRATCH/.julia`)
+            * auto-load the Julia module when you login (such that the `julia` command is available)
+            * make `mpiexecjl` available (i.e. modify `$PATH`)
+        * instantiates the Julia environment
+        * installs MPI.jl's `mpiexecjl` wrapper
+        * installs a Jupyter kernel (for NERSC's Jupyter hub)
+
+    </details>
 
 3. **!! Before you proceed, restart VS Code !!**
     * Close it fully, open it again, and connect to Perlmutter again (see above). Otherwise the `.bashrc` changes won't be in effect.
