@@ -1,5 +1,4 @@
 # 2D linear diffusion solver - multithreading
-using ThreadPinning
 using Printf
 using CairoMakie
 include(joinpath(@__DIR__, "../../shared.jl"))

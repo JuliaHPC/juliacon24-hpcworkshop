@@ -1,0 +1,27 @@
+
+
+#### Run 512
+-- single threaded
+Time = 4.6421e-02 s, T_eff = 8.13 GB/s 
+
+-- multithreaded (8 threads)
+Time = 1.6735e-02 s, T_eff = 22.56 GB/s 
+
+
+
+#### Run 2048
+-- single threaded
+Time = 7.3168e-01 s, T_eff = 8.25 GB/s 
+
+-- multithreaded (8 threads)
+Time = 5.6353e-01 s, T_eff = 10.72 GB/s 
+
+
+
+#### Run 6144
+-- single threaded
+Time = 6.5959e+00 s, T_eff = 8.24 GB/s 
+
+-- multithreaded (8 threads)
+Time = 3.2809e+00 s, T_eff = 16.57 GB/s 
+

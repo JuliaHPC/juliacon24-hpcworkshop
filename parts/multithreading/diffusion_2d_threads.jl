@@ -1,5 +1,4 @@
 # 2D linear diffusion solver - multithreading
-using ThreadPinning
 using Printf
 using CairoMakie
 include(joinpath(@__DIR__, "../shared.jl"))
@@ -45,10 +44,10 @@ function diffusion_step!(params, C2, C)
     #
     # !! TODO !!
     #
-    # Similar to the initialization above, we want to multithread the
-    # diffusion step (computational kernel). Based off of the serial kernel
-    # (see README.md or diffusion_2d_loop.jl) implement two multithreaded variants
-    # that use static or dynamic scheduling, respectively (see "TODO..." below).
+    # We want to multithread the diffusion step (our computational kernel).
+    # Based off of the serial kernel (see README.md or diffusion_2d_loop.jl) implement
+    # two multithreaded variants that use static or dynamic scheduling, respectively
+    # (see "TODO..." below).
     #
     if static
         # static scheduling
@@ -88,6 +87,9 @@ end
 (!@isdefined do_run) && (do_run = true)
 
 if do_run
-    run_diffusion(; ns=256, do_visualize)
-    # run_diffusion(; ns=6144, nt=200, do_visualize)
+    if !isempty(ARGS)
+        run_diffusion(; ns=parse(Int, ARGS[1]), do_visualize)
+    else
+        run_diffusion(; ns=256, do_visualize)
+    end
 end
