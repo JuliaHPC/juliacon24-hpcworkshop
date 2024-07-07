@@ -81,6 +81,7 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
 
 * **!! Before you proceed, restart VS Code !!**
   * Close it fully, open it again, and connect to Perlmutter again (see above). Otherwise the `.bashrc` changes won't be in effect.
+
 * Let's now turn to the Julia VS Code extension.
 
   1) Installing the extension
@@ -93,6 +94,10 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
       - Search for `Julia executable`.
       - Insert `/pscratch/sd/t/trainXY/juliacon24-hpcworkshop/julia_wrapper.sh` - with `trainXY` replaced by you training account name - into the text field under `Julia: Executable Path`.
    3) If `ALT/OPTION + J` followed by `ALT/OPTION + O` (**or** pressing `F1` and executing the `Julia: Start REPL` command) successfully spins up the integrated Julia REPL, you know that the setup is working! 🎉
+
+ * Finally, you should probably open the workshop directory in VS Code.
+   * In the VS Code terminal, run `cd $SCRATCH/juliacon24-hpcworkshop` followed by `code -r .`
+   * Manual alternative: Click on the green button "Open Folder" (or press `CTRL/CMD + O`) and enter `/pscratch/sd/t/trainXY/juliacon24-hpcworkshop` - **with `trainXY` replaced by you training account name**.
         
 **If you have already done the steps above before the workshop (if not, skip this):**
 
@@ -101,3 +106,9 @@ You should make sure that you have the latest version of the materials on worksh
 * Switch to the workshop repository `cd $SCRATCH/juliacon24-hpcworkshop`.
 * Run `git pull`.
 * Rerun the setup script: `./setup.sh`.
+
+## Troubleshooting
+
+### VS Code isn't working for me, what should I do?
+
+As a fallback, you can also try to use Jupyter under https://jupyter.nersc.gov. Just make sure to use the "JuliaCon24 HPC Workshop 1.10.4" kernel.
