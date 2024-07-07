@@ -65,7 +65,7 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
 
        git clone https://github.com/JuliaHPC/juliacon24-hpcworkshop $SCRATCH/juliacon24-hpcworkshop
   
-  * **You will always work in this folder (`$SCRATCH/juliacon24-hpcworkshop`) during the workshop.**
+    * **You will always work in this folder (`$SCRATCH/juliacon24-hpcworkshop`) during the workshop.**
 2. Run the following commands:
 
        cd $SCRATCH/juliacon24-hpcworkshop
@@ -102,8 +102,8 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
     3) If `ALT/OPTION + J` followed by `ALT/OPTION + O` (**or** pressing `F1` and executing the `Julia: Start REPL` command) successfully spins up the integrated Julia REPL, you know that the setup is working! 🎉
 
  5. Finally, you should open the workshop directory in VS Code.
-   * In the VS Code terminal, run `cd $SCRATCH/juliacon24-hpcworkshop` followed by `code -r .`
-   * Manual alternative: Click on the green button "Open Folder" (or press `CTRL/CMD + O`) and enter `/pscratch/sd/t/trainXY/juliacon24-hpcworkshop` - **with `trainXY` replaced by you training account name**.
+     * In the VS Code terminal, run `cd $SCRATCH/juliacon24-hpcworkshop` followed by `code -r .`
+     * Manual alternative: Click on the green button "Open Folder" (or press `CTRL/CMD + O`) and enter `/pscratch/sd/t/trainXY/juliacon24-hpcworkshop` - **with `trainXY` replaced by you training account name**.
 
 ## Troubleshooting
 
