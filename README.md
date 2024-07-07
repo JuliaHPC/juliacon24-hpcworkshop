@@ -13,7 +13,7 @@
 * **Onboarding**
   * [Introduction](onboarding/intro.pdf)
   * [NERSC overview](#)
-  * [Julia + VS Code on Perlmutter](onboarding/julia_on_clusters.pdf)
+  * [Julia + VS Code on Perlmutter](onboarding/julia_vscode_on_perlmutter.pdf)
 
 * **Introducing the example**
   * [2D linear diffusion solver](parts/diffusion_2d)
