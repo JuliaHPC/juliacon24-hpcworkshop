@@ -109,4 +109,4 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
 
 ### VS Code isn't working for me, what should I do?
 
-As a fallback, you can also try to use Jupyter under https://jupyter.nersc.gov. Just make sure to use the "JuliaCon24 HPC Workshop 1.10.4" kernel.
+As a fallback, you can also try to use Jupyter under https://jupyter.nersc.gov. Just make sure to use the `JuliaCon24 HPC Workshop 1.10.4` kernel.
