@@ -27,3 +27,9 @@ open(bashrc; append=true) do f
     write(f, str)
 end
 @info("Done!")
+
+@info("Installing Jupyter kernel")
+Pkg.build("IJulia") # to be safe
+using IJulia
+IJulia.installkernel("JuliaCon24 HPC Workshop"; env=Dict("JULIA_NUM_THREADS" => "8", "JULIA_PROJECT" => @__DIR__))
+@info("Done!")

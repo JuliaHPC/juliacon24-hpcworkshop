@@ -1,6 +1,7 @@
 # misc
 .DS_Store
 .vscode
+.ipynb_checkpoints
 
 # julia
 # Manifest.toml

@@ -21,7 +21,7 @@ IFS=$_IFS
 
 JULIA_EXEC=$(which julia)
 KERNEL="${ijulia_boostrap[-1]}"
-JULIA_NUM_THREADS=8
+export JULIA_NUM_THREADS=8
 
 echo "Connecting using JULIA_EXEC=$JULIA_EXEC and KERNEL=$KERNEL"
 exec $JULIA_EXEC -i --startup-file=yes --color=yes $KERNEL "$@"

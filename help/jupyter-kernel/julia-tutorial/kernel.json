@@ -1,5 +1,5 @@
 {
-  "display_name": "Julia Tutorial",
+  "display_name": "JuliaCon24 HPC Workshop",
   "argv": [
     "{resource_dir}/kernel-helper.sh",
     "{connection_file}"
