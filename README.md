@@ -65,19 +65,20 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
 
        git clone https://github.com/JuliaHPC/juliacon24-hpcworkshop $SCRATCH/juliacon24-hpcworkshop
   
-  * You will work in this folder during the workshop.
-* Change into the workshop repository that you've just cloned (`cd $SCRATCH/juliacon24-hpcworkshop`) and run the following command(s).
+  * **You will always work in this folder (`$SCRATCH/juliacon24-hpcworkshop`) during the workshop.**
+* Run the following commands:
 
+      cd $SCRATCH/juliacon24-hpcworkshop
       ./setup.sh
-      . $HOME/.bashrc
   
   * The setup script
-    * instantiates the Julia environment
-    * installs MPI.jl's `mpiexecjl` wrapper
     * modifies your `$HOME/.bashrc` to
       * permanently put your Julia depot onto the parallel file system (`$SCRATCH/.julia`)
       * auto-load the Julia module when you login (such that the `julia` command is available)
       * make `mpiexecjl` available (i.e. modify `$PATH`)
+    * instantiates the Julia environment
+    * installs MPI.jl's `mpiexecjl` wrapper
+    * installs a Jupyter kernel (for NERSC's Jupyter hub)
 
 * **!! Before you proceed, restart VS Code !!**
   * Close it fully, open it again, and connect to Perlmutter again (see above). Otherwise the `.bashrc` changes won't be in effect.
@@ -95,17 +96,9 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
       - Insert `/pscratch/sd/t/trainXY/juliacon24-hpcworkshop/julia_wrapper.sh` - with `trainXY` replaced by you training account name - into the text field under `Julia: Executable Path`.
    3) If `ALT/OPTION + J` followed by `ALT/OPTION + O` (**or** pressing `F1` and executing the `Julia: Start REPL` command) successfully spins up the integrated Julia REPL, you know that the setup is working! 🎉
 
- * Finally, you should probably open the workshop directory in VS Code.
+ * Finally, you should open the workshop directory in VS Code.
    * In the VS Code terminal, run `cd $SCRATCH/juliacon24-hpcworkshop` followed by `code -r .`
    * Manual alternative: Click on the green button "Open Folder" (or press `CTRL/CMD + O`) and enter `/pscratch/sd/t/trainXY/juliacon24-hpcworkshop` - **with `trainXY` replaced by you training account name**.
-        
-**If you have already done the steps above before the workshop (if not, skip this):**
-
-You should make sure that you have the latest version of the materials on workshop day. To that end, perform the following steps **on Perlmutter** at the beginning of the workshop:
-
-* Switch to the workshop repository `cd $SCRATCH/juliacon24-hpcworkshop`.
-* Run `git pull`.
-* Rerun the setup script: `./setup.sh`.
 
 ## Troubleshooting
 
