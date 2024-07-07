@@ -4,15 +4,6 @@ $(dirname "$0")/julia_wrapper.sh $0
 exit
 # =#
 
-@info("Instantiating Julia environment")
-using Pkg
-Pkg.activate(@__DIR__)
-Pkg.instantiate()
-@info("Done!")
-
-using MPI
-MPI.install_mpiexecjl(force=true)
-
 @info("Preparing .bashrc")
 bashrc = joinpath(ENV["HOME"], ".bashrc")
 str = """\n
@@ -27,6 +18,17 @@ open(bashrc; append=true) do f
     write(f, str)
 end
 @info("Done!")
+
+@info("Instantiating Julia environment")
+empty!(DEPOT_PATH)
+push!(DEPOT_PATH, joinpath(ENV["SCRATCH"], ".julia"))
+using Pkg
+Pkg.activate(@__DIR__)
+Pkg.instantiate()
+@info("Done!")
+
+using MPI
+MPI.install_mpiexecjl(force=true)
 
 @info("Installing Jupyter kernel")
 Pkg.build("IJulia") # to be safe
