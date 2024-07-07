@@ -75,6 +75,6 @@ While you are more than invited to play around with these degrees of freedom in 
 To simplify things, we've prepared the script `job_bench_threads.sh` for you, which you can simply submit to SLURM (`sbatch job_bench_threads.sh`). The output will end up in the file `slurm_bench_threads.out`.
 
 **Questions:**
-* First, compare the `static=true` results with increasing `ns` (that is, ignore the dynamic scheduling runs for now). Can you **qualitatively** explain what you observe?
+* First, compare the `static=true` results with increasing `ns` (that is, ignore the dynamic scheduling runs for now). Can you qualitatively explain the performance difference/similarity between the three pinning strategies? And maybe also why it changes with increasing `ns`?
 * Why does dynamic scheduling (most of the time) give worse performance than static scheduling?
 * The output also shows single-threaded timings. Consider the timing ratio ($t_{serial}$ / $t_{parallel}$) for the best performing cases. Is it an improvement over what you found above (i.e. closer to a factor of 8)?
