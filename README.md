@@ -78,7 +78,9 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
       * permanently put your Julia depot onto the parallel file system (`$SCRATCH/.julia`)
       * auto-load the Julia module when you login (such that the `julia` command is available)
       * make `mpiexecjl` available (i.e. modify `$PATH`)
-     
+
+* **!! Before you proceed, restart VS Code !!**
+  * Close it fully, open it again, and connect to Perlmutter again (see above). Otherwise the `.bashrc` changes won't be in effect.
 * Let's now turn to the Julia VS Code extension.
 
   1) Installing the extension
