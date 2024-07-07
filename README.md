@@ -61,12 +61,12 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
 
 
 ### On Perlmutter
-* Clone the workshop materials into `$SCRATCH/juliacon24-hpcworkshop`by running the following command.
+1. Clone the workshop materials into `$SCRATCH/juliacon24-hpcworkshop`by running the following command.
 
        git clone https://github.com/JuliaHPC/juliacon24-hpcworkshop $SCRATCH/juliacon24-hpcworkshop
   
   * **You will always work in this folder (`$SCRATCH/juliacon24-hpcworkshop`) during the workshop.**
-* Run the following commands:
+2. Run the following commands:
 
       cd $SCRATCH/juliacon24-hpcworkshop
       ./setup.sh
@@ -80,10 +80,10 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
     * installs MPI.jl's `mpiexecjl` wrapper
     * installs a Jupyter kernel (for NERSC's Jupyter hub)
 
-* **!! Before you proceed, restart VS Code !!**
-  * Close it fully, open it again, and connect to Perlmutter again (see above). Otherwise the `.bashrc` changes won't be in effect.
+3. **!! Before you proceed, restart VS Code !!**
+    * Close it fully, open it again, and connect to Perlmutter again (see above). Otherwise the `.bashrc` changes won't be in effect.
 
-* Let's now turn to the Julia VS Code extension.
+4. Let's now turn to the Julia VS Code extension.
 
   1) Installing the extension
       - Open the extensions view (press `CTRL/CMD + SHIFT + X`).
@@ -96,7 +96,7 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
       - Insert `/pscratch/sd/t/trainXY/juliacon24-hpcworkshop/julia_wrapper.sh` - with `trainXY` replaced by you training account name - into the text field under `Julia: Executable Path`.
    3) If `ALT/OPTION + J` followed by `ALT/OPTION + O` (**or** pressing `F1` and executing the `Julia: Start REPL` command) successfully spins up the integrated Julia REPL, you know that the setup is working! 🎉
 
- * Finally, you should open the workshop directory in VS Code.
+ 5. Finally, you should open the workshop directory in VS Code.
    * In the VS Code terminal, run `cd $SCRATCH/juliacon24-hpcworkshop` followed by `code -r .`
    * Manual alternative: Click on the green button "Open Folder" (or press `CTRL/CMD + O`) and enter `/pscratch/sd/t/trainXY/juliacon24-hpcworkshop` - **with `trainXY` replaced by you training account name**.
 
