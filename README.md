@@ -68,8 +68,8 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
   * **You will always work in this folder (`$SCRATCH/juliacon24-hpcworkshop`) during the workshop.**
 2. Run the following commands:
 
-      cd $SCRATCH/juliacon24-hpcworkshop
-      ./setup.sh
+       cd $SCRATCH/juliacon24-hpcworkshop
+       ./setup.sh
   
   * The setup script
     * modifies your `$HOME/.bashrc` to
@@ -85,16 +85,16 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
 
 4. Let's now turn to the Julia VS Code extension.
 
-  1) Installing the extension
+   1) Installing the extension
       - Open the extensions view (press `CTRL/CMD + SHIFT + X`).
       - Search for `julia`.
       - Click on `install`.
-  2) Pointing it to `julia_wrapper.sh`
+   2) Pointing it to `julia_wrapper.sh`
       - Open the VS Code Settings (press `CTRL/CMD + ,`).
       - Click on the tab `Remote [SSH: perlmutter.nersc.gov]`.
       - Search for `Julia executable`.
       - Insert `/pscratch/sd/t/trainXY/juliacon24-hpcworkshop/julia_wrapper.sh` - with `trainXY` replaced by you training account name - into the text field under `Julia: Executable Path`.
-   3) If `ALT/OPTION + J` followed by `ALT/OPTION + O` (**or** pressing `F1` and executing the `Julia: Start REPL` command) successfully spins up the integrated Julia REPL, you know that the setup is working! 🎉
+    3) If `ALT/OPTION + J` followed by `ALT/OPTION + O` (**or** pressing `F1` and executing the `Julia: Start REPL` command) successfully spins up the integrated Julia REPL, you know that the setup is working! 🎉
 
  5. Finally, you should open the workshop directory in VS Code.
    * In the VS Code terminal, run `cd $SCRATCH/juliacon24-hpcworkshop` followed by `code -r .`
