@@ -1,0 +1,6 @@
+[deps]
+AbstractTrees = "1520ce14-60c1-5f80-bbc7-55ef81b5835c"
+Hwloc = "0e44f5e4-bd66-52a0-8798-143a42290a1d"
+MPI = "da04e1cc-30fd-572f-bb4f-1f8673147195"
+MPIClusterManagers = "e7922434-ae4b-11e9-05c5-9780451d2c66"
+NetworkInterfaceControllers = "6f74fd91-2978-43ad-8164-3af8c0ec0142"
