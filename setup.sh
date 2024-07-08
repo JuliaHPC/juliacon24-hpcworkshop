@@ -22,6 +22,7 @@ end
 @info("Instantiating Julia environment")
 empty!(DEPOT_PATH)
 push!(DEPOT_PATH, joinpath(ENV["SCRATCH"], ".julia"))
+push!(DEPOT_PATH, "/global/common/software/ntrain1/.julia")
 using Pkg
 Pkg.activate(@__DIR__)
 Pkg.instantiate()
