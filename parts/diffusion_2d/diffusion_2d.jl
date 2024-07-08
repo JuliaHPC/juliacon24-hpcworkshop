@@ -44,5 +44,5 @@ end
 (!@isdefined do_run) && (do_run = true)
 
 if do_run
-    run_diffusion(; ns=256, do_visualize)
+    run_diffusion(; ns=256, nt=500, do_visualize)
 end

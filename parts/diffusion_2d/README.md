@@ -9,7 +9,7 @@ The script [`diffusion_d2.jl`](./diffusion_2d.jl) provides the starting point; a
 
 The follow-up script, [`diffusion_d2_loop.jl`](./diffusion_2d_loop.jl), implements a serial loop version of the previous script that we will use as a starting point for all our further experiments.
 
-## Warm-up Task - 2D diffusion
+## Warm-up Task - running 2D diffusion
 
 Your very first task is to get familiar with the script structure and output generated. Run the [`diffusion_2d-jl`](diffusion_2d.jl) script, verifying that plotting works and assess the reported effective memory throughput `T_eff` (in the REPL).
 
