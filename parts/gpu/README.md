@@ -84,4 +84,10 @@ You can run the [`visualize_mpi.jl`](./visualize_mpi.jl) script in order to visu
 
 ### Part C (optional)
 
-As a last (and optional) step, we could realize a weak scaling to assess the parallel efficiency of our implementation. For this we should set the spatial resolution `ns` to the lowest value that was showing amongst best performance in the strong scaling experiment from Task 1, possibly adapting `nt` such that the code executes not much longer than 1 second.
+As a last (and optional) step, we could realize a weak scaling to assess the parallel efficiency of our implementation. For this we should set the spatial resolution `ns` to the lowest value that was showing amongst best performance in the strong scaling experiment from Task 1, possibly adapting `nt` such that the code executes not much longer than 1 second and setting `do_save = false`.
+
+Then one should run the GPU MPI script on one MPI rank (thus one GPU) in order to assess the baseline performance. Once this is done, one should increase the number of MPI ranks, while keeping the same local problem size, making the global problem scale linearly with the computing resources. Performance tests could be achieved for 1, 4, 9, 16, (64) ranks. Parallel efficiency can be reported by normalising the $T_\mathrm{eff}$ or wall-time obtained for tests > 1 rank by the single rank performance.
+
+**Questions:**
+* What parallel efficiency do you observe?
+  * If it drops, what workaround could one implement?
