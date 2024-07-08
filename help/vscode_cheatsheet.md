@@ -11,9 +11,15 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
 
 ## Basics
 
+* Run a command: Press `F1` or `CTRL/CMD + SHIFT + P`
+
 * Open a terminal: `` Ctrl + ` ``
 
 * Open a folder from the terminal: `code -r .`
+
+* Search for a file: `CTRL/CMD + T`
+
+* Search for a function in a file: `CTRL/CMD + R`
 
 ## Julia
 
