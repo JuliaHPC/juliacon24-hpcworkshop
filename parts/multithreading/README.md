@@ -2,7 +2,7 @@
 
 In this part, we want to use multithreading (shared-memory parallelism) to parallelize our Diffusion 2D example.
 
-The starting point is the serial loop version [`diffusion_2d_loop.jl`](./../diffusion_2d/diffusion_2d_loop.jl). The file [`diffusion_2d_threads.jl`](./diffusion_2d_threads.jl) in this folder is a slightly modified copy of this version. Specifically, we included the serial initialization of the arrays `C` and `C2` in form of the function `init_arrays_threads` and left the computational kernel (`diffusion_step!)` mostly unimplemented. Note that there are few code stubs (indicated by `TODO` comments) that you will implement in the tasks below.
+The starting point is the serial loop version [`diffusion_2d_loop.jl`](./../diffusion_2d/diffusion_2d_loop.jl). The file [`diffusion_2d_threads.jl`](./diffusion_2d_threads.jl) in this folder is a slightly modified copy of this version. Specifically, we included the serial initialization of the arrays `C` and `C2` in form of the function `init_arrays_threads` and left the computational kernel (`diffusion_step!`) mostly unimplemented. Note that there are few code stubs (indicated by `TODO` comments) that you will implement in the tasks below.
 
 ## Task 1 - Multithreading `diffusion_step!`
 
@@ -69,7 +69,7 @@ Now, we want to systematically compare the performance of our code for
 * different values of `ns` (512, 2048, and 6144), and
 * different pinning schemes (`:cores`, `:sockets`, `:numa`)
 
-While you are more than invited to play around with these degrees of freedom in an interactive Julia session running on a **compute node**, this will likely become rather cumbersome very quickly.    
+While you are more than invited to play around with these degrees of freedom in an interactive Julia session running on a **compute node**, this will likely become rather cumbersome very quickly.
 (We still invite you to play around a little bit with ThreadPinning's `threadinfo` and `pinthreads`!)
 
 To simplify things, we've prepared the script `job_bench_threads.sh` for you, which you can simply submit to SLURM (`sbatch job_bench_threads.sh`). The output will end up in the file `slurm_bench_threads.out`.
