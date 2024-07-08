@@ -8,7 +8,7 @@ exit
 bashrc = joinpath(ENV["HOME"], ".bashrc")
 str = """\n
 # --- JULIACON24-HPCWORKSHOP ---
-export JULIA_DEPOT_PATH=\$SCRATCH/.julia
+export JULIA_DEPOT_PATH=\$SCRATCH/.julia:/global/common/software/ntrain1/.julia
 export PATH=\$SCRATCH/.julia/bin:\$PATH
 # auto-load the Julia module
 ml use /global/common/software/nersc/n9/julia/modules
