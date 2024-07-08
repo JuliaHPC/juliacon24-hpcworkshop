@@ -27,8 +27,6 @@
 
 ## Prepare for the workshop
 
-You can already do the following steps before the workshop (but there will also be time to do them in Eindhoven).
-
 To begin with, make sure that you have [VS Code](https://code.visualstudio.com/download) installed on your laptop.
 
 ### VS Code → Perlmutter (via SSH)
