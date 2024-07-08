@@ -43,7 +43,7 @@ You can either perform the rough benchmark in an interactive Julia session or us
   * Use `include("diffusion_2d_threads.jl")` to run the code.
 
 * Script::
-  * Either just run the script on the current node (`sh job_compare_threads_serial.sh`) or submit it as a job to SLURM (`sbatch job_compare_threads.serial.sh`). In the latter case, the output will end up in a file called `slurm_compare_threads_serial.out`.
+  * Either just run the script on the current node (`sh job_compare_threads_serial.sh`) or submit it as a job to SLURM (`sbatch job_compare_threads_serial.sh`). In the latter case, the output will end up in a file called `slurm_compare_threads_serial.out`.
 
 **Questions:**
 * What do you observe?
