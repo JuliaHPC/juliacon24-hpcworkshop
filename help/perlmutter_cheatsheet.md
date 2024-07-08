@@ -6,9 +6,8 @@
 `sbatch job_script.sh`
 
 ### List your submitted jobs
-`squeue -u trainXY`, where `trainXY` is your account name.
 
-Tip: `watch -n 1 'squeue -u trainXY'`
+`sqs` or maybe even `watch -n 10 'sqs'`
 
 ### Canceling a job
 

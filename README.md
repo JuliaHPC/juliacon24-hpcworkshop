@@ -86,6 +86,11 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
      * In the VS Code terminal, run `cd $SCRATCH/juliacon24-hpcworkshop` followed by `code -r .`
      * Manual alternative: Click on the green button "Open Folder" (or press `CTRL/CMD + O`) and enter `/pscratch/sd/t/trainXY/juliacon24-hpcworkshop` - **with `trainXY` replaced by you training account name**.
 
+## Cheatsheets
+
+* [Perlmutter cheatsheet](./help/perlmutter_cheatsheet.md)
+* [VS Code cheatsheet](./help/vscode_cheatsheet.md)
+
 ## Troubleshooting
 
 ### VS Code isn't working for me, what should I do?
