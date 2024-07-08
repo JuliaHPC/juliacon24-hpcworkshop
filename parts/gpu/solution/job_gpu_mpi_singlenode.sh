@@ -1,0 +1,14 @@
+#!/bin/bash
+#SBATCH --time=00:05:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=4
+#SBATCH --constraint=gpu
+#SBATCH --gpu=4
+#SBATCH --account=ntrain1
+#SBATCH --output=slurm_gpu_mpi_singlenode.out
+
+# Load julia
+ml use /global/common/software/nersc/n9/julia/modules
+ml julia
+
+mpiexecjl --project -n 4 julia diffusion_2d_cuda_mpi.jl

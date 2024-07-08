@@ -3,7 +3,7 @@ using Printf
 using JLD2
 using CUDA
 using MPI
-include(joinpath(@__DIR__, "../shared.jl"))
+include(joinpath(@__DIR__, "../../shared.jl"))
 
 # convenience macros simply to avoid writing nested finite-difference expression
 macro qx(ix, iy) esc(:(-D * (C[$ix+1, $iy] - C[$ix, $iy]) * inv(ds))) end
@@ -28,28 +28,43 @@ end
 
 # MPI functions
 @views function update_halo!(A, bufs, neighbors, comm)
-    #
-    # !! TODO !!
-    #
-    # We want to replace use the `update_halo!` function defined in the CPU MPI script
-    # and use it here. Since we are using GPU-aware MPI, we can directly re-use the
-    # function since MPI communication will take care of exchanging halo values living
-    # in GPU memory.
-    #
+    # dim-1 (x)
+    (neighbors.x[1] != MPI.PROC_NULL) && copyto!(bufs.send_1_1, A[2    , :])
+    (neighbors.x[2] != MPI.PROC_NULL) && copyto!(bufs.send_1_2, A[end-1, :])
+
+    reqs = MPI.MultiRequest(4)
+    (neighbors.x[1] != MPI.PROC_NULL) && MPI.Irecv!(bufs.recv_1_1, comm, reqs[1]; source=neighbors.x[1])
+    (neighbors.x[2] != MPI.PROC_NULL) && MPI.Irecv!(bufs.recv_1_2, comm, reqs[2]; source=neighbors.x[2])
+
+    (neighbors.x[1] != MPI.PROC_NULL) && MPI.Isend(bufs.send_1_1, comm, reqs[3]; dest=neighbors.x[1])
+    (neighbors.x[2] != MPI.PROC_NULL) && MPI.Isend(bufs.send_1_2, comm, reqs[4]; dest=neighbors.x[2])
+    MPI.Waitall(reqs) # blocking
+
+    (neighbors.x[1] != MPI.PROC_NULL) && copyto!(A[1  , :], bufs.recv_1_1)
+    (neighbors.x[2] != MPI.PROC_NULL) && copyto!(A[end, :], bufs.recv_1_2)
+
+    # dim-2 (y)
+    (neighbors.y[1] != MPI.PROC_NULL) && copyto!(bufs.send_2_1, A[:, 2    ])
+    (neighbors.y[2] != MPI.PROC_NULL) && copyto!(bufs.send_2_2, A[:, end-1])
+
+    reqs = MPI.MultiRequest(4)
+    (neighbors.y[1] != MPI.PROC_NULL) && MPI.Irecv!(bufs.recv_2_1, comm, reqs[1]; source=neighbors.y[1])
+    (neighbors.y[2] != MPI.PROC_NULL) && MPI.Irecv!(bufs.recv_2_2, comm, reqs[2]; source=neighbors.y[2])
+
+    (neighbors.y[1] != MPI.PROC_NULL) && MPI.Isend(bufs.send_2_1, comm, reqs[3]; dest=neighbors.y[1])
+    (neighbors.y[2] != MPI.PROC_NULL) && MPI.Isend(bufs.send_2_2, comm, reqs[4]; dest=neighbors.y[2])
+    MPI.Waitall(reqs) # blocking
+
+    (neighbors.y[1] != MPI.PROC_NULL) && copyto!(A[:, 1  ], bufs.recv_2_1)
+    (neighbors.y[2] != MPI.PROC_NULL) && copyto!(A[:, end], bufs.recv_2_2)
     return
 end
 
 function init_bufs(A)
-    #
-    # !! TODO !!
-    #
-    # We are using GPU-aware MPI, which greatly simplifies the implementation and ensures
-    # good performance. GPU-aware MPI exchanges GPU pointers and thus we shpuld initialize
-    # the send and receive buffers on the GPU memory. Complete the missing `return` statement
-    # by replicating what we did for CPU MPI but making sure to initialise buffers on the GPU
-    # using the correct data type (Float64).
-    #
-    return (; # TODO )
+    return (; send_1_1=CUDA.zeros(Float64, size(A, 2)), send_1_2=CUDA.zeros(Float64, size(A, 2)),
+              send_2_1=CUDA.zeros(Float64, size(A, 1)), send_2_2=CUDA.zeros(Float64, size(A, 1)),
+              recv_1_1=CUDA.zeros(Float64, size(A, 2)), recv_1_2=CUDA.zeros(Float64, size(A, 2)),
+              recv_2_1=CUDA.zeros(Float64, size(A, 1)), recv_2_2=CUDA.zeros(Float64, size(A, 1)))
 end
 
 function run_diffusion(; ns=64, nt=100, do_save=false)
@@ -64,14 +79,10 @@ function run_diffusion(; ns=64, nt=100, do_save=false)
     coords    = MPI.Cart_coords(comm_cart)
     neighbors = (; x=MPI.Cart_shift(comm_cart, 0, 1), y=MPI.Cart_shift(comm_cart, 1, 1))
     # select GPU on multi-GPU system based on shared memory topology
-    #
-    # !! TODO !!
-    #
-    # We need to define a local MPI communicator based on `MPI.COMM_TYPE_SHARED` in order to
-    # retireve the node-local rank of the MPI processes given we want to map each GPU from one
-    # node to a MPI rank. Then we want to get the rank from the new communicator and use
-    # it to set the GPU device.
-    #
+    comm_l    = MPI.Comm_split_type(comm, MPI.COMM_TYPE_SHARED, me)
+    me_l      = MPI.Comm_rank(comm_l)
+    # set GPU
+    gpu_id    = CUDA.device!(me_l)
     println("$(gpu_id)")
     (me == 0) && println("nprocs = $(nprocs), dims = $dims")
 
