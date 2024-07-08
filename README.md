@@ -20,7 +20,7 @@
 
 * **Parallelization on Perlmutter**
   * [Multithreading](parts/multithreading)
-    
+
     (short break)
   * [Distributed computing](parts/mpi)
   * [GPU acceleration](parts/gpu)
@@ -38,14 +38,14 @@ To begin with, make sure that you have [VS Code](https://code.visualstudio.com/d
 2) Enter `trainXY@perlmutter.nersc.gov` (with `trainXY` replaced by your training account) and press enter.
 3) In the popup input box, enter your password and press enter.
 
-After a second or two, you should have VS Code running on a Perlmutter login node! 🎉 
+After a second or two, you should have VS Code running on a Perlmutter login node! 🎉
 
 
 ### On Perlmutter
 1. Clone the workshop materials into `$SCRATCH/juliacon24-hpcworkshop`by running the following command.
 
        git clone https://github.com/JuliaHPC/juliacon24-hpcworkshop $SCRATCH/juliacon24-hpcworkshop
-  
+
     * **You will always work in this folder (`$SCRATCH/juliacon24-hpcworkshop`) during the workshop.**
 2. Run the following commands:
 
@@ -54,7 +54,7 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
 
     <details>
      <summary>What does this do? (click me if you're curious)</summary>
-     
+
     * The setup script
         * modifies your `$HOME/.bashrc` to
             * permanently put your Julia depot onto the parallel file system (`$SCRATCH/.julia`)
