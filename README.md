@@ -11,19 +11,19 @@
 ## Schedule
 
 * **Onboarding**
-  * [Introduction](onboarding/intro.pdf)
-  * [NERSC overview](#)
-  * [Julia + VS Code on Perlmutter](onboarding/julia_vscode_on_perlmutter.pdf)
+  * [Introduction](./onboarding/intro.pdf)
+  * [NERSC overview](./onboarding/overview.pdf)
+  * [Julia + VS Code on Perlmutter](./onboarding/julia_vscode_on_perlmutter.pdf)
 
 * **Introducing the example**
-  * [2D linear diffusion solver](parts/diffusion_2d)
+  * [2D linear diffusion solver](./parts/diffusion_2d)
 
 * **Parallelization on Perlmutter**
-  * [Multithreading](parts/multithreading)
+  * [Multithreading](./parts/multithreading)
 
     (short break)
-  * [MPI parallelization](parts/mpi)
-  * [GPU acceleration](parts/gpu)
+  * [MPI parallelization](./parts/mpi)
+  * [GPU acceleration](./parts/gpu)
 
 ## Prepare for the workshop
 
