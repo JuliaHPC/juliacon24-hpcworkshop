@@ -118,5 +118,9 @@ end
 (!@isdefined do_run) && (do_run = true)
 
 if do_run
-    run_diffusion(; ns=256, do_save)
+    if !isempty(ARGS)
+        run_diffusion(; ns=parse(Int, ARGS[1]), do_save)
+    else
+        run_diffusion(; ns=256, do_save)
+    end
 end

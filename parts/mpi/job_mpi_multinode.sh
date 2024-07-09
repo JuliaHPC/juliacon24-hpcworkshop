@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --time=00:05:00
-#SBATCH --nodes=4
+#SBATCH --nodes=1
 #SBATCH --ntasks-per-node=4
 #SBATCH --constraint=cpu
 #SBATCH --account=ntrain1
@@ -11,4 +11,4 @@
 ml use /global/common/software/nersc/n9/julia/modules
 ml julia
 
-mpiexecjl --project julia diffusion_2d_mpi.jl
+mpiexecjl --project julia -e 'do_save=false; include("diffusion_2d_mpi.jl");' 6144

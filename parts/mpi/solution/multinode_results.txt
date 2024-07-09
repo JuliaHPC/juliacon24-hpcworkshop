@@ -1,0 +1,15 @@
+# 1 node, 4 MPI ranks
+nprocs = 4, dims = [2, 2]
+Time = 6.5865e+00 s, T_eff = 8.25 GB/s
+
+# 2 nodes, 8 MPI ranks
+nprocs = 8, dims = [4, 2]
+Time = 6.5964e+00 s, T_eff = 8.24 GB/s
+
+# 3 nodes, 12 MPI ranks
+nprocs = 12, dims = [4, 3]
+Time = 6.5889e+00 s, T_eff = 8.25 GB/s
+
+# 4 nodes, 16 MPI ranks
+nprocs = 16, dims = [4, 4]
+Time = 6.6004e+00 s, T_eff = 8.24 GB/s 
