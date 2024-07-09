@@ -17,5 +17,5 @@ for i in 512 2048 4096 8192 16384
 do
     echo -e "\n\n#### GPU run $i"
 
-    julia --project -e 'do_visualize=false; include("diffusion_2d_cuda.jl")' $i
+    julia --project -e 'do_save=false; include("diffusion_2d_cuda.jl")' $i
 done

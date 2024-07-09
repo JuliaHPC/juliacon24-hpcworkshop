@@ -1,6 +1,6 @@
 # 2D linear diffusion solver - GPU cuda version
 using Printf
-using CairoMakie
+using JLD2
 using CUDA
 include(joinpath(@__DIR__, "../../shared.jl"))
 
@@ -25,10 +25,9 @@ function diffusion_step!(params, C2, C)
     return nothing
 end
 
-function run_diffusion(; ns=64, nt=100, do_visualize=false)
-    params   = init_params_gpu(; ns, nt, do_visualize)
+function run_diffusion(; ns=64, nt=100, do_save=false)
+    params   = init_params_gpu(; ns, nt, do_save)
     C, C2    = init_arrays_gpu(params)
-    fig, plt = maybe_init_visualization(params, C)
     t_tic = 0.0
     # Time loop
     for it in 1:nt
@@ -37,27 +36,26 @@ function run_diffusion(; ns=64, nt=100, do_visualize=false)
         # diffusion
         diffusion_step!(params, C2, C)
         C, C2 = C2, C # pointer swap
-        # visualization
-        maybe_update_visualization(params, fig, plt, C, it)
     end
     # synchronize the gpu before querying the final time
     CUDA.synchronize()
     t_toc = (Base.time() - t_tic)
     print_perf(params, t_toc)
+    do_save && jldsave(joinpath(@__DIR__, "out_gpu.jld2"); C = Array(C), l = params.L)
     return nothing
 end
 
 # Running things...
 
-# enable visualization by default
-(!@isdefined do_visualize) && (do_visualize = true)
+# enable saving by default
+(!@isdefined do_save) && (do_save = true)
 # enable execution by default
 (!@isdefined do_run) && (do_run = true)
 
 if do_run
     if !isempty(ARGS)
-        run_diffusion(; ns=parse(Int, ARGS[1]), do_visualize)
+        run_diffusion(; ns=parse(Int, ARGS[1]), do_save)
     else
-        run_diffusion(; ns=256, do_visualize)
+        run_diffusion(; ns=256, do_save)
     end
 end
