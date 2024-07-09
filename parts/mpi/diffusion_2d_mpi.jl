@@ -75,14 +75,12 @@ end
 
 function run_diffusion(; ns=64, nt=100, do_save=false)
     MPI.Init()
-    dims      = [0, 0]
     comm      = MPI.COMM_WORLD
     nprocs    = MPI.Comm_size(comm)
-    # arrange MPI ranks in a Cartesian grid
-    MPI.Dims_create!(nprocs, dims)
-    comm_cart = MPI.Cart_create(comm, dims, [0, 0], 1)
+    dims      = MPI.Dims_create(nprocs, (0, 0)) |> Tuple
+    comm_cart = MPI.Cart_create(comm, dims)
     me        = MPI.Comm_rank(comm_cart)
-    coords    = MPI.Cart_coords(comm_cart)
+    coords    = MPI.Cart_coords(comm_cart) |> Tuple
     neighbors = (; x=MPI.Cart_shift(comm_cart, 0, 1), y=MPI.Cart_shift(comm_cart, 1, 1))
     (me == 0) && println("nprocs = $(nprocs), dims = $dims")
 
