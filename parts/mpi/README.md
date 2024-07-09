@@ -37,7 +37,7 @@ Our goal is to perform a rough and basic scaling analysis with 4, 8, and 16 MPI 
 
 The file `job_mpi_multinode.sh` is a job script that currently requests a single node (see the line `#SBATCH --nodes=1`) that runs 4 MPI ranks (see the line `#SBATCH --ntasks-per-node=4`), and then runs our Julia MPI code with `do_save=false` for simplicity and `ns=6144`.
 
-Submit this file to SLURM via `sbatch job_mpi_multinode.sh`. Once the job has run, the output will land in `slurm_mpi_multinode.sh`. Write the output down somewhere (copy & paste), change the number of nodes to 2 (= 8 MPI ranks in total) and rerun the experiment. Repeat the same thing, this time requesting 4 nodes (= 16 MPI ranks in total).
+Submit this file to SLURM via `sbatch job_mpi_multinode.sh`. Once the job has run, the output will land in `slurm_mpi_multinode.sh`. Write the output down somewhere (copy & paste), change the number of nodes to 2 (= 8 MPI ranks in total) and rerun the experiment. Repeat the same thing, this time requesting 3 nodes (= 12 MPI ranks in total) and then requesting 4 nodes (= 16 MPI ranks in total).
 
 ### Part B
 
