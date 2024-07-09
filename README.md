@@ -1,6 +1,6 @@
 # JuliaCon24 Workshop: Hands-on with Julia for HPC on GPUs and CPUs
 
-**Instructors:** [Carsten Bauer](https://github.com/carstenbauer), [Ludovic Räss](https://github.com/luraess), and [Johannes Blaschke](https://github.com/JBlaschke) (remote).
+**Instructors:** [Carsten Bauer](https://github.com/carstenbauer), [Ludovic Räss](https://github.com/luraess), [Ivan Utkin](https://github.com/utkinis), and [Johannes Blaschke](https://github.com/JBlaschke) (remote).
 
 **Where:** TU-Eindhoven 0.244
 
@@ -11,19 +11,19 @@
 ## Schedule
 
 * **Onboarding**
-  * [Introduction](onboarding/intro.pdf)
-  * [NERSC overview](#)
-  * [Julia + VS Code on Perlmutter](onboarding/julia_vscode_on_perlmutter.pdf)
+  * [Introduction](./onboarding/intro.pdf) [~5m]
+  * [NERSC overview](./onboarding/overview.pdf) [~10m]
+  * [Julia + VS Code on Perlmutter](./onboarding/julia_vscode_on_perlmutter.pdf) [~20m]
 
 * **Introducing the example**
-  * [2D linear diffusion solver](parts/diffusion_2d)
+  * [2D linear diffusion solver](./parts/diffusion_2d) [~15m]
 
 * **Parallelization on Perlmutter**
-  * [Multithreading](parts/multithreading)
+  * [Multithreading](./parts/multithreading) [~40m]
 
-    (short break)
-  * [MPI parallelization](parts/mpi)
-  * [GPU acceleration](parts/gpu)
+    (short break) [~10m]
+  * [MPI parallelization](./parts/mpi) [~40m]
+  * [GPU acceleration](./parts/gpu) [~40m]
 
 ## Prepare for the workshop
 
@@ -93,7 +93,7 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
 
 ### VS Code isn't working for me, what should I do?
 
-As a fallback, you can also try to use Jupyter under https://jupyter.nersc.gov. Just make sure to use the `JuliaCon24 HPC Workshop 1.10.4` kernel.
+As a fallback, you can also try to use Jupyter under https://jupyter.nersc.gov. Just make sure to use the `JuliaCon24 HPC Workshop 1.10.4` kernel (open a notebook and select the kernel in the top right corner).
 
 ## Applying for NERSC Training Account
 

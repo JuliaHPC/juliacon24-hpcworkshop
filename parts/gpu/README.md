@@ -10,6 +10,16 @@ Note that there are few code stubs (indicated by `TODO` comments) that you will 
 
 Recall that on the GPU, you need to explicitly specify the data type to be `Float64` as CUDA.jl defaults to `Float32`.
 
+## Reminder
+
+Remember that, on Perlmutter, **you can't run GPU or MPI processes on a login node**. You have two options to work on a compute node:
+
+1) **Interactive session**: You can try to get an interactive session on a compute node by running `sh get_gpu_compute_node_interactive.sh` (but unfortunately, we don't have a node for everyone). **If you can get one**, you can:
+    - single GPU script: launch Julia from the interactive session and run the single GPU script. Alternatively, you can run `sh job_bench_gpu.sh`.
+    - multi-GPU: run the GPU MPI code by `mpiexecjl --project -n 4 julia diffusion_2d_cuda_mpi.jl`. Alternatively, you can run `sh job_gpu_mpi_singlenode.sh`.
+
+2) **Compute job**: You can always submit a job that runs the code: `sbatch job_gpu_mpi_singlenode.sh`. The output will land in `slurm_gpu_mpi_singlenode.out`. Check out the [Perlmutter cheetsheet](../../help/perlmutter_cheatsheet.md) to learn more about jobs.
+
 ## Task 1 - CUDA `diffusion_step_kernel!`
 
 ### Part A
@@ -51,7 +61,7 @@ You can either perform the rough benchmark in an interactive Julia session or us
 
 In this second task, we will see how to combine GPUs and MPI in order to achieve distributed memory parallelization on multiple GPUs. This step is the gateway to run Julia at scale on latest GPU-accelerated supercomputers such as NERSC's Perlmutter.
 
-We will first test our implementations (Part A) and perform a weak scaling test (Part B).
+We will first make the required changes to the code (Part A), test our implementation (Part B) and perform a weak scaling test (Part C).
 
 ### Part A
 
@@ -82,9 +92,9 @@ You can run the [`visualize_mpi.jl`](./visualize_mpi.jl) script in order to visu
 * Do you observe correct diffusion results, for both the singlenode and multinode configurations?
   * Is each MPI rank accessing a different GPU from that node?
 
-### Part C (optional)
+### Part C
 
-As a last (and optional) step, we could realize a weak scaling to assess the parallel efficiency of our implementation. For this we should set the spatial resolution `ns` to the lowest value that was showing amongst best performance in the strong scaling experiment from Task 1, possibly adapting `nt` such that the code executes not much longer than 1 second and setting `do_save = false`.
+As a last step, we will realize a weak scaling to assess the parallel efficiency of our implementation. For this we should set the spatial resolution `ns` to the value that was showing best performance in the strong scaling experiment from Task 1, possibly adapting `nt` such that the code executes not much longer than 1 second and setting `do_save = false`.
 
 Then one should run the GPU MPI script on one MPI rank (thus one GPU) in order to assess the baseline performance. Once this is done, one should increase the number of MPI ranks, while keeping the same local problem size, making the global problem scale linearly with the computing resources. Performance tests could be achieved for 1, 4, 9, 16, (64) ranks. Parallel efficiency can be reported by normalising the $T_\mathrm{eff}$ or wall-time obtained for tests > 1 rank by the single rank performance.
 

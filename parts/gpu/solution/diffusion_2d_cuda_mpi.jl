@@ -106,7 +106,7 @@ function run_diffusion(; ns=64, nt=100, do_save=false)
     if do_save
         jldsave(joinpath(@__DIR__, "out_$(me).jld2"); C = Array(C[2:end-1, 2:end-1]), lxy = (; lx=params.L, ly=params.L))
     end
-    # MPI.Finalize()
+    MPI.Finalize()
     return
 end
 
