@@ -11,19 +11,19 @@
 ## Schedule
 
 * **Onboarding**
-  * [Introduction](onboarding/intro.pdf)
-  * [NERSC overview](#)
-  * [Julia + VS Code on Perlmutter](onboarding/julia_vscode_on_perlmutter.pdf)
+  * [Introduction](./onboarding/intro.pdf)
+  * [NERSC overview](./onboarding/overview.pdf)
+  * [Julia + VS Code on Perlmutter](./onboarding/julia_vscode_on_perlmutter.pdf)
 
 * **Introducing the example**
-  * [2D linear diffusion solver](parts/diffusion_2d)
+  * [2D linear diffusion solver](./parts/diffusion_2d)
 
 * **Parallelization on Perlmutter**
-  * [Multithreading](parts/multithreading)
+  * [Multithreading](./parts/multithreading)
 
     (short break)
-  * [MPI parallelization](parts/mpi)
-  * [GPU acceleration](parts/gpu)
+  * [MPI parallelization](./parts/mpi)
+  * [GPU acceleration](./parts/gpu)
 
 ## Prepare for the workshop
 
@@ -93,7 +93,7 @@ After a second or two, you should have VS Code running on a Perlmutter login nod
 
 ### VS Code isn't working for me, what should I do?
 
-As a fallback, you can also try to use Jupyter under https://jupyter.nersc.gov. Just make sure to use the `JuliaCon24 HPC Workshop 1.10.4` kernel.
+As a fallback, you can also try to use Jupyter under https://jupyter.nersc.gov. Just make sure to use the `JuliaCon24 HPC Workshop 1.10.4` kernel (open a notebook and select the kernel in the top right corner).
 
 ## Applying for NERSC Training Account
 
