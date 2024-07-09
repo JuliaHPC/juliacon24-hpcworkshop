@@ -1,11 +1,11 @@
 #!/bin/bash
 #SBATCH --time=00:05:00
-#SBATCH --nodes=1
+#SBATCH --nodes=4
 #SBATCH --ntasks-per-node=4
-#SBATCH --constraint=cpu
+#SBATCH --constraint=gpu
 #SBATCH --account=ntrain1
 #SBATCH --output=slurm_mpi_multinode.out
-#SBATCH --qos=debug
+#SBATCH --qos=regular
 
 # Load julia
 ml use /global/common/software/nersc/n9/julia/modules
