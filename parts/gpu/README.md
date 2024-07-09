@@ -15,8 +15,8 @@ Recall that on the GPU, you need to explicitly specify the data type to be `Floa
 Remember that, on Perlmutter, **you can't run GPU or MPI processes on a login node**. You have two options to work on a compute node:
 
 1) **Interactive session**: You can try to get an interactive session on a compute node by running `sh get_gpu_compute_node_interactive.sh` (but unfortunately, we don't have a node for everyone). **If you can get one**, you can:
-- single GPU script: launch Julia from the interactive session and run the single GPU script. Alternatively, you can run `sh job_bench_gpu.sh`.
-- multi-GPU: run the GPU MPI code by `mpiexecjl --project -n 4 julia diffusion_2d_cuda_mpi.jl`. Alternatively, you can run `sh job_gpu_mpi_singlenode.sh`.
+    - single GPU script: launch Julia from the interactive session and run the single GPU script. Alternatively, you can run `sh job_bench_gpu.sh`.
+    - multi-GPU: run the GPU MPI code by `mpiexecjl --project -n 4 julia diffusion_2d_cuda_mpi.jl`. Alternatively, you can run `sh job_gpu_mpi_singlenode.sh`.
 
 2) **Compute job**: You can always submit a job that runs the code: `sbatch job_gpu_mpi_singlenode.sh`. The output will land in `slurm_gpu_mpi_singlenode.out`. Check out the [Perlmutter cheetsheet](../../help/perlmutter_cheatsheet.md) to learn more about jobs.
 
