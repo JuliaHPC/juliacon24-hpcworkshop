@@ -1,2 +1,10 @@
 nprocs = 4, dims = [2, 2]
-Time = 1.2399e-02 s, T_eff = 7.61 GB/s 
+Time = 1.2467e-02 s, T_eff = 7.57 GB/s 
+┌ Warning: Opening file with JLD2.MmapIO failed, falling back to IOStream
+└ @ JLD2 ~/.julia/packages/JLD2/twZ5D/src/JLD2.jl:298
+┌ Warning: Opening file with JLD2.MmapIO failed, falling back to IOStream
+└ @ JLD2 ~/.julia/packages/JLD2/twZ5D/src/JLD2.jl:298
+┌ Warning: Opening file with JLD2.MmapIO failed, falling back to IOStream
+└ @ JLD2 ~/.julia/packages/JLD2/twZ5D/src/JLD2.jl:298
+┌ Warning: Opening file with JLD2.MmapIO failed, falling back to IOStream
+└ @ JLD2 ~/.julia/packages/JLD2/twZ5D/src/JLD2.jl:298

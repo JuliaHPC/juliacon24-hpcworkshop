@@ -5,9 +5,10 @@
 #SBATCH --constraint=cpu
 #SBATCH --account=ntrain1
 #SBATCH --output=slurm_mpi_singlenode.out
+#SBATCH --qos=debug
 
 # Load julia
 ml use /global/common/software/nersc/n9/julia/modules
 ml julia
 
-mpiexecjl --project -n 4 julia --threads 1 diffusion_2d_mpi.jl
+mpiexecjl --project julia --threads 1 diffusion_2d_mpi.jl
