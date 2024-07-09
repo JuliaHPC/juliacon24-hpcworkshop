@@ -6,16 +6,16 @@ using MPI
 include(joinpath(@__DIR__, "../../shared.jl"))
 
 # convenience macros simply to avoid writing nested finite-difference expression
-macro qx(ix, iy) esc(:(-D * (C[$ix+1, $iy] - C[$ix, $iy]) * inv(ds))) end
-macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) * inv(ds))) end
+macro qx(ix, iy) esc(:(-D * (C[$ix+1, $iy] - C[$ix, $iy]) * inv(dx))) end
+macro qy(ix, iy) esc(:(-D * (C[$ix, $iy+1] - C[$ix, $iy]) * inv(dy))) end
 
 function diffusion_step_kernel!(params, C2, C)
-    (; ds, dt, D) = params
+    (; dx, dy, dt, D) = params
     ix = (blockIdx().x - 1) * blockDim().x + threadIdx().x # CUDA vectorised unique index
     iy = (blockIdx().y - 1) * blockDim().y + threadIdx().y # CUDA vectorised unique index
     if ix <= size(C, 1)-2 && iy <= size(C, 2)-2
-        @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix + 1, iy + 1) - @qx(ix, iy + 1)) * inv(ds) +
-                                                         (@qy(ix + 1, iy + 1) - @qy(ix + 1, iy)) * inv(ds))
+        @inbounds C2[ix+1, iy+1] = C[ix+1, iy+1] - dt * ((@qx(ix + 1, iy + 1) - @qx(ix, iy + 1)) * inv(dx) +
+                                                         (@qy(ix + 1, iy + 1) - @qy(ix + 1, iy)) * inv(dy))
     end
     return nothing
 end
@@ -69,14 +69,12 @@ end
 
 function run_diffusion(; ns=64, nt=100, do_save=false)
     MPI.Init()
-    dims      = [0, 0]
     comm      = MPI.COMM_WORLD
     nprocs    = MPI.Comm_size(comm)
-    # arrange MPI ranks in a Cartesian grid
-    MPI.Dims_create!(nprocs, dims)
-    comm_cart = MPI.Cart_create(comm, dims, [0, 0], 1)
+    dims      = MPI.Dims_create(nprocs, (0, 0)) |> Tuple
+    comm_cart = MPI.Cart_create(comm, dims)
     me        = MPI.Comm_rank(comm_cart)
-    coords    = MPI.Cart_coords(comm_cart)
+    coords    = MPI.Cart_coords(comm_cart) |> Tuple
     neighbors = (; x=MPI.Cart_shift(comm_cart, 0, 1), y=MPI.Cart_shift(comm_cart, 1, 1))
     # select GPU on multi-GPU system based on shared memory topology
     comm_l    = MPI.Comm_split_type(comm, MPI.COMM_TYPE_SHARED, me)
@@ -108,7 +106,7 @@ function run_diffusion(; ns=64, nt=100, do_save=false)
     if do_save
         jldsave(joinpath(@__DIR__, "out_$(me).jld2"); C = Array(C[2:end-1, 2:end-1]), lxy = (; lx=params.L, ly=params.L))
     end
-    MPI.Finalize()
+    # MPI.Finalize()
     return
 end
 
