@@ -19,8 +19,8 @@ function init_params_mpi(; dims, coords, ns=64, nt=100, kwargs...)
     dt   = min(dx, dy)^2 / D / 8.2   # time step
     x0   = coords[1] * (ns - 2) * dx # coords shift to get global coords on  local process
     y0   = coords[2] * (ns - 2) * dy # coords shift to get global coords on  local process
-    xcs  = [x0 + ix * dx - dx / 2 - 0.5 * L for ix in 1:ns] # local vector of global coord points
-    ycs  = [y0 + iy * dy - dy / 2 - 0.5 * L for iy in 1:ns] # local vector of global coord points
+    xcs  = LinRange(x0 + dx / 2, x0 + L - dx / 2, ns) .- 0.5 * L # local vector of global coord points
+    ycs  = LinRange(y0 + dy / 2, y0 + L - dy / 2, ns) .- 0.5 * L # local vector of global coord points
     return (; L, D, ns, nt, dx, dy, dt, xcs, ycs, kwargs...)
 end
 
@@ -46,8 +46,8 @@ function init_params_gpu_mpi(; dims, coords, ns=64, nt=100, kwargs...)
     dt   = min(dx, dy)^2 / D / 8.2   # time step
     x0   = coords[1] * (ns - 2) * dx # coords shift to get global coords on  local process
     y0   = coords[2] * (ns - 2) * dy # coords shift to get global coords on  local process
-    xcs  = [x0 + ix * dx - dx / 2 - 0.5 * L for ix in 1:ns] # local vector of global coord points
-    ycs  = [y0 + iy * dy - dy / 2 - 0.5 * L for iy in 1:ns] # local vector of global coord points
+    xcs  = LinRange(x0 + dx / 2, x0 + L - dx / 2, ns) .- 0.5 * L # local vector of global coord points
+    ycs  = LinRange(y0 + dy / 2, y0 + L - dy / 2, ns) .- 0.5 * L # local vector of global coord points
     nthreads = 32, 8                 # number of threads per block
     nblocks  = cld.(ns, nthreads)    # number of blocks
     return (; L, D, ns, nt, dx, dy, dt, xcs, ycs, nthreads, nblocks, kwargs...)
