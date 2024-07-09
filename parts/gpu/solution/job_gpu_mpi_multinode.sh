@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --time=00:05:00
 #SBATCH --nodes=4
-#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks-per-node=4
 #SBATCH --gpus-per-task=1
 #SBATCH --constraint=gpu
 #SBATCH --account=ntrain1
