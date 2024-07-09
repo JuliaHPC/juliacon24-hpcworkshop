@@ -7,7 +7,7 @@
 #SBATCH --constraint=gpu
 #SBATCH --account=ntrain1
 #SBATCH --output=slurm_bench_gpu.out
-#SBATCH --qos=debug
+#SBATCH --qos=regular
 
 # Load julia
 ml use /global/common/software/nersc/n9/julia/modules
