@@ -30,5 +30,3 @@ Check that your code is working by comparing the `visualization.png` that you ge
 
 <img src="./solution/visualization.png" width=500px>
 
-
-TODO.... performance, scaling.
