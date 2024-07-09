@@ -22,7 +22,7 @@
   * [Multithreading](parts/multithreading)
 
     (short break)
-  * [Distributed computing](parts/mpi)
+  * [MPI parallelization](parts/mpi)
   * [GPU acceleration](parts/gpu)
 
 ## Prepare for the workshop
