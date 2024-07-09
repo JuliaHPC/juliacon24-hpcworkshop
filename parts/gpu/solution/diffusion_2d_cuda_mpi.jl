@@ -81,9 +81,9 @@ function run_diffusion(; ns=64, nt=100, do_save=false)
     # select GPU on multi-GPU system based on shared memory topology
     comm_l    = MPI.Comm_split_type(comm, MPI.COMM_TYPE_SHARED, me)
     me_l      = MPI.Comm_rank(comm_l)
-    # set GPU
-    gpu_id    = CUDA.device!(me_l)
-    println("$(gpu_id)")
+    # set GPU, but only if more than one device present
+    gpu_id    = CUDA.device!(me_l % ndevices())
+    println("$(gpu_id), out of: $(ndevices())")
     (me == 0) && println("nprocs = $(nprocs), dims = $dims")
 
     params = init_params_gpu_mpi(; dims, coords, ns, nt, do_save)
