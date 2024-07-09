@@ -7469,7 +7469,7 @@ main {
 </div>
 </div>
 </div>
-</div>
+</div></div><div class="fragment">
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1f4228e3-d910-451b-8523-7b60f342788d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -7562,7 +7562,7 @@ Library information:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-julia"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">NetworkInterfaceControllers</span><span class="p">,</span><span class="w"> </span><span class="n">Sockets</span>
@@ -7577,15 +7577,15 @@ Library information:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>6-element Vector{NetworkInterfaceControllers.Interface}:
- NetworkInterfaceControllers.Interface("nmn0", :v4, ip"10.100.108.135")
- NetworkInterfaceControllers.Interface("hsn0", :v4, ip"10.249.43.24")
- NetworkInterfaceControllers.Interface("hsn0:chn", :v4, ip"128.55.84.223")
- NetworkInterfaceControllers.Interface("hsn1", :v4, ip"10.249.43.8")
- NetworkInterfaceControllers.Interface("hsn2", :v4, ip"10.249.43.7")
- NetworkInterfaceControllers.Interface("hsn3", :v4, ip"10.249.43.23")</pre>
+ NetworkInterfaceControllers.Interface("nmn0", :v4, ip"10.100.108.57")
+ NetworkInterfaceControllers.Interface("hsn0", :v4, ip"10.249.42.35")
+ NetworkInterfaceControllers.Interface("hsn0:chn", :v4, ip"128.55.84.171")
+ NetworkInterfaceControllers.Interface("hsn1", :v4, ip"10.249.42.19")
+ NetworkInterfaceControllers.Interface("hsn2", :v4, ip"10.249.42.20")
+ NetworkInterfaceControllers.Interface("hsn3", :v4, ip"10.249.42.36")</pre>
 </div>
 </div>
 </div>
@@ -7606,7 +7606,7 @@ Library information:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [54]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-julia"><pre><span></span><span class="c"># net_devs are populated using Hwloc, please take a look at the source notebook</span>
@@ -7659,7 +7659,7 @@ Device hsn3 is a Slingshot device
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Let's now use this information to find a HSN device with which we manage our MPI cluster. Note: we'll take the one with <code>:chn</code> in the name (as it's the only one with a public IP:</p>
+<p>Let's now use this information to find a HSN device with which we manage our MPI cluster. Note: we'll take the one with <code>:chn</code> in the name (as it's the only one with a public IP):</p>
 </div>
 </div>
 </div>
@@ -7668,10 +7668,12 @@ Device hsn3 is a Slingshot device
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [65]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-julia"><pre><span></span><span class="n">hsn0_public</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filter</span><span class="p">(</span><span class="n">x</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="o">==</span><span class="s">"hsn0:chn"</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">x</span><span class="o">.</span><span class="n">version</span><span class="o">==</span><span class="ss">:v4</span><span class="p">),</span><span class="w"> </span><span class="n">interfaces</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">only</span>
+<div class="highlight hl-julia"><pre><span></span><span class="n">hsn0_public</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filter</span><span class="p">(</span>
+<span class="w">    </span><span class="n">x</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="o">==</span><span class="s">"hsn0:chn"</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">x</span><span class="o">.</span><span class="n">version</span><span class="o">==</span><span class="ss">:v4</span><span class="p">),</span><span class="w"> </span><span class="n">interfaces</span>
+<span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">only</span>
 </pre></div>
 </div>
 </div>
@@ -7682,9 +7684,9 @@ Device hsn3 is a Slingshot device
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[65]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>NetworkInterfaceControllers.Interface("hsn0:chn", :v4, ip"128.55.84.223")</pre>
+<pre>NetworkInterfaceControllers.Interface("hsn0:chn", :v4, ip"128.55.84.171")</pre>
 </div>
 </div>
 </div>
@@ -7694,7 +7696,7 @@ Device hsn3 is a Slingshot device
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [66]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-julia"><pre><span></span><span class="n">public_slingshot_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getnameinfo</span><span class="p">(</span><span class="n">hsn0_public</span><span class="o">.</span><span class="n">ip</span><span class="p">)</span>
@@ -7708,9 +7710,9 @@ Device hsn3 is a Slingshot device
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[66]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>"nid200448-hsn0"</pre>
+<pre>"nid200344-hsn0"</pre>
 </div>
 </div>
 </div>
@@ -7731,7 +7733,7 @@ Device hsn3 is a Slingshot device
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [67]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-julia"><pre><span></span><span class="c"># to import MPIManager</span>
@@ -7759,7 +7761,7 @@ Device hsn3 is a Slingshot device
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[67]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>4-element Vector{Int64}:
  2
@@ -7786,7 +7788,7 @@ Device hsn3 is a Slingshot device
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [69]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-julia"><pre><span></span><span class="nd">@mpi_do</span><span class="w"> </span><span class="n">manager</span><span class="w"> </span><span class="k">begin</span>
@@ -7809,10 +7811,10 @@ Device hsn3 is a Slingshot device
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>      From worker 5:	Hello world, I am 3 of 4 on nid200453
-      From worker 2:	Hello world, I am 0 of 4 on nid200448
-      From worker 4:	Hello world, I am 2 of 4 on nid200452
-      From worker 3:	Hello world, I am 1 of 4 on nid200449
+<pre>      From worker 5:	Hello world, I am 3 of 4 on nid200349
+      From worker 4:	Hello world, I am 2 of 4 on nid200348
+      From worker 2:	Hello world, I am 0 of 4 on nid200344
+      From worker 3:	Hello world, I am 1 of 4 on nid200345
 </pre>
 </div>
 </div>
