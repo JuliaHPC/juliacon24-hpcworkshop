@@ -8,7 +8,7 @@ function vizme2D_mpi(nprocs)
     ip = 1
     for ipx in 1:nprocs[1]
         for ipy in 1:nprocs[2]
-            C_loc, lxy = load(joinpath(@__DIR__, "out_$(ip-1).jld2"), "C", "lxy")
+            C_loc, lxy = load("out_$(ip-1).jld2", "C", "lxy")
             nx_i, ny_i = size(C_loc, 1), size(C_loc, 2)
             ix1, iy1 = 1 + (ipx - 1) * nx_i, 1 + (ipy - 1) * ny_i
             if ip == 1
@@ -24,7 +24,11 @@ function vizme2D_mpi(nprocs)
     ax  = Axis(fig[1, 1][1, 1]; aspect=DataAspect(), title="C")
     hm  = heatmap!(ax, xc, yc, C; colormap=:turbo, colorrange=(0, 1))
     cb  = Colorbar(fig[1, 1][1, 2], hm)
-    display(fig)
+    if isinteractive()
+        display(fig)
+    else
+        save("visualization.png", fig)
+    end
     return
 end
 

@@ -2,7 +2,7 @@
 using Printf
 using JLD2
 using MPI
-include(joinpath(@__DIR__, "../shared.jl"))
+include(joinpath(@__DIR__, "../../shared.jl"))
 
 # convenience macros simply to avoid writing nested finite-difference expression
 macro qx(ix, iy) esc(:(-D * (C[$ix+1, $iy] - C[$ix, $iy]) / dx)) end
@@ -21,29 +21,16 @@ end
 
 # MPI functions
 @views function update_halo!(A, bufs, neighbors, comm)
-    #
-    # !!! TODO
-    #
-    # Complete the halo exchange implementation. Specifically, use non-blocking
-    # MPI communication (Irecv and Isend) at the positions marked by "TODO..." below.
-    #
-    # Help:
-    #   left neighbor:  neighbors.x[1]
-    #   right neighbor: neighbors.x[2]
-    #   up neighbor:    neighbors.y[1]
-    #   down neighbor:  neighbors.y[2]
-    #
-
     # dim-1 (x)
     (neighbors.x[1] != MPI.PROC_NULL) && copyto!(bufs.send_1_1, A[2    , :])
     (neighbors.x[2] != MPI.PROC_NULL) && copyto!(bufs.send_1_2, A[end-1, :])
 
     reqs = MPI.MultiRequest(4)
-    (neighbors.x[1] != MPI.PROC_NULL) && # TODO... receive from left neighbor into bufs.recv_1_1
-    (neighbors.x[2] != MPI.PROC_NULL) && # TODO... receive from right neighbor into bufs.recv_1_2
+    (neighbors.x[1] != MPI.PROC_NULL) && MPI.Irecv!(bufs.recv_1_1, comm, reqs[1]; source=neighbors.x[1])
+    (neighbors.x[2] != MPI.PROC_NULL) && MPI.Irecv!(bufs.recv_1_2, comm, reqs[2]; source=neighbors.x[2])
 
-    (neighbors.x[1] != MPI.PROC_NULL) && # TODO... send bufs.send_1_1 to left neighbor
-    (neighbors.x[2] != MPI.PROC_NULL) && # TODO... send bufs.send_1_2 to right neighbor
+    (neighbors.x[1] != MPI.PROC_NULL) && MPI.Isend(bufs.send_1_1, comm, reqs[3]; dest=neighbors.x[1])
+    (neighbors.x[2] != MPI.PROC_NULL) && MPI.Isend(bufs.send_1_2, comm, reqs[4]; dest=neighbors.x[2])
     MPI.Waitall(reqs) # blocking
 
     (neighbors.x[1] != MPI.PROC_NULL) && copyto!(A[1  , :], bufs.recv_1_1)
@@ -54,11 +41,11 @@ end
     (neighbors.y[2] != MPI.PROC_NULL) && copyto!(bufs.send_2_2, A[:, end-1])
 
     reqs = MPI.MultiRequest(4)
-    (neighbors.y[1] != MPI.PROC_NULL) && # TODO... receive from up neighbor into bufs.recv_2_1
-    (neighbors.y[2] != MPI.PROC_NULL) && # TODO... receive from down neighbor into bufs.recv_2_2
+    (neighbors.y[1] != MPI.PROC_NULL) && MPI.Irecv!(bufs.recv_2_1, comm, reqs[1]; source=neighbors.y[1])
+    (neighbors.y[2] != MPI.PROC_NULL) && MPI.Irecv!(bufs.recv_2_2, comm, reqs[2]; source=neighbors.y[2])
 
-    (neighbors.y[1] != MPI.PROC_NULL) && # TODO... send bufs.send_2_1 to up neighbor
-    (neighbors.y[2] != MPI.PROC_NULL) && # TODO... send bufs.send_2_2 to down neighbor
+    (neighbors.y[1] != MPI.PROC_NULL) && MPI.Isend(bufs.send_2_1, comm, reqs[3]; dest=neighbors.y[1])
+    (neighbors.y[2] != MPI.PROC_NULL) && MPI.Isend(bufs.send_2_2, comm, reqs[4]; dest=neighbors.y[2])
     MPI.Waitall(reqs) # blocking
 
     (neighbors.y[1] != MPI.PROC_NULL) && copyto!(A[:, 1  ], bufs.recv_2_1)
