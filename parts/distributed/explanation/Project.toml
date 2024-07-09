@@ -1,4 +1,6 @@
 [deps]
+ClusterManagers = "34f1f09b-3a8b-5176-ab39-66d58a4d544e"
 Dagger = "d58978e5-989f-55fb-8d15-ea34adc7bf54"
 DistributedArrays = "aaf54ef3-cdf8-58ed-94cc-d582ad619b94"
+NetworkInterfaceControllers = "6f74fd91-2978-43ad-8164-3af8c0ec0142"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
