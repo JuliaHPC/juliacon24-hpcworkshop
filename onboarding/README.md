@@ -2,7 +2,7 @@
 
 This place we keep onboarding instructions. Please also refer to the [cheat sheets](../help/).
 
-Also, if you're intersted in applying for a NERSC account, please take a look at [Rebecca's slides](../help/NERSC%20Education%20Resources.pdf)
+Also, if you're intersted in applying for a NERSC account, please take a look at [Rebecca's slides](../help/NERSC%20Education%20Resources.pdf).
 
 ## Important: Before you go on your own ways
 
