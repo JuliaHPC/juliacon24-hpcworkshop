@@ -118,5 +118,6 @@ end
 (!@isdefined do_run) && (do_run = true)
 
 if do_run
-    run_diffusion(; ns=256, do_save)
+    # run_diffusion(; ns=256, do_save)
+    run_diffusion(; ns=16384, do_save=false)
 end

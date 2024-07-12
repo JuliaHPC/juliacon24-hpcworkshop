@@ -66,3 +66,30 @@ ml julia
 
 mpiexecjl --project -n 9 julia mpicode.jl
 ```
+### MPI GPU
+
+```bash
+#!/bin/bash
+#SBATCH -A ntrain1
+#SBATCH -C gpu
+#SBATCH -q regular
+#SBATCH --output=slurm_gpu_mpi_multinode.out
+#SBATCH --time=00:05:00
+#SBATCH --nodes=4
+#SBATCH --ntasks=16
+#SBATCH --gpus-per-node=4
+#SBATCH --exclusive
+#SBATCH --gpu-bind=none
+
+# pin to closest NIC to GPU
+export MPICH_OFI_NIC_POLICY=GPU
+
+# default to std memory pool, see: https://juliaparallel.org/MPI.jl/stable/knownissues/#Memory-pool
+export JULIA_CUDA_MEMORY_POOL=none
+
+ml use /global/common/software/nersc/n9/julia/modules
+ml julia
+
+mpiexecjl --project=../.. julia gpu_mpicode.jl
+
+```
